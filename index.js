@@ -48,7 +48,7 @@ app.get('/detail/:skin/:uid\.png', (req, res) => {
 
   const detail = true
 
-  userInfo({ uid, detail })
+  userInfo(uid, detail)
     .then(data => {
       svg({ data, skin, detail })
         .then(svgImage => {
