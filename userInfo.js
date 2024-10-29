@@ -3,13 +3,19 @@ const NodeCache = require("node-cache")
 const http = require('./utils/http')
 const logger = pino({ level: process.env.LOG_LEVEL || 'info' });
 
+const index = require('./utils/index');
 const roleIdCache = new NodeCache({ stdTTL: 60 * 60 * 24 * 365 });
 const userAgents = require('user-agents');
 const randomUserAgent = new userAgents({ deviceCategory: 'desktop' }).toString(); // this will break if hoyolab starts to tie tokens to user agents
 
 const __API = {
   FETCH_ROLE_ID: 'https://bbs-api-os.hoyolab.com/game_record/card/wapi/getGameRecordCard',
-  FETCH_ROLE_INDEX: 'https://bbs-api-os.hoyolab.com/game_record/genshin/api/index'
+  FETCH_ROLE_INDEX: {
+    'hi3' : 'https://bbs-api-os.hoyolab.com/game_record/honkai3rd/api/index', 
+    'gi' : 'https://bbs-api-os.hoyolab.com/game_record/genshin/api/index',
+    'hsr' : 'https://bbs-api-os.hoyolab.com/game_record/hkrpg/api/index',
+    'zzz' : 'https://sg-act-nap-api.hoyolab.com/event/game_record_zzz/api/zzz/index'
+  }
 }
 
 const getRoleInfo = (uid) => {
@@ -24,6 +30,9 @@ const getRoleInfo = (uid) => {
         "User-Agent": randomUserAgent,
         "Accept": "application/json, text/plain, */*",
         "x-rpc-language": "en-us",
+        'x-rpc-client_type': 5,
+        'x-rpc-app_version': '1.5.0',
+        'DS': index.getDS(""),
         "Cookie": `${process.env.HOYOLAB_TOKENV2 == "true" ? "ltoken_v2" : "ltoken"}=${process.env.HOYOLAB_TOKEN};${process.env.HOYOLAB_TOKENV2 == "true" ? "ltuid_v2" : "ltuid"}=${process.env.HOYOLAB_ID};` // HoYoLAB only cares about the LToken and LTUID cookies
       }
     })
@@ -62,15 +71,16 @@ const getRoleInfo = (uid) => {
   )
 }
 
-const userInfo = (uid, detail=false) => {
+const userInfo = (game ,uid, detail=false) => {
   return new Promise((resolve, reject) => {
+    console.log(game, uid, detail)
     getRoleInfo(uid)
       .then(roleInfo => {
         const { game_role_id, region } = roleInfo
         if (detail) {
           http({
             method: "GET",
-            url: __API.FETCH_ROLE_INDEX + `?role_id=${game_role_id}&server=${region}`,
+            url: __API.FETCH_ROLE_INDEX[game] + `?role_id=${game_role_id}&server=${region}`,
             headers: {
               "User-Agent": randomUserAgent,
               "Accept": "application/json, text/plain, */*",
