@@ -1,8 +1,7 @@
 const express = require('express')
 const compression = require('compression')
 const pino = require('pino');
-const cache = require('./utils/cache')
-const userInfo = require('./userInfo')
+const { getRoleInfo, userInfo } = require('./userInfo')
 const svg = require('./utils/svg')
 
 const logger = pino({ level: process.env.LOG_LEVEL || 'info' });
@@ -21,9 +20,9 @@ const CACHE_10800 = 'max-age=10800'
 
 app.get('/:skin/:uid\.png', (req, res) => {
   const { skin, uid } = req.params
-  logger.info('收到请求 uid:%s, skin:%s', uid, skin)
+  logger.info('收到請求 uid:%s, skin:%s', uid, skin)
 
-  userInfo({ uid })
+  userInfo(uid)
     .then(data => {
       svg({ data, skin })
         .then(svgImage => {
@@ -41,12 +40,11 @@ app.get('/:skin/:uid\.png', (req, res) => {
         code: -1
       })
     })
-
 })
 
 app.get('/detail/:skin/:uid\.png', (req, res) => {
   const { skin, uid } = req.params
-  logger.info('收到请求 uid:%s, skin:%s', uid, skin)
+  logger.info('收到請求 uid:%s, skin:%s', uid, skin)
 
   const detail = true
 
@@ -85,5 +83,6 @@ app.get('/heart-beat', (req, res) => {
 });
 
 const listener = app.listen(3000, () => {
+  require("dotenv").config();
   logger.info('Your app is listening on port ' + listener.address().port)
 })

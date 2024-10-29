@@ -19,7 +19,7 @@ ABCDEFGHIJKLMNOPQRSTUVWXYZ
 abcdefghijklmnopqrstuvwxyz
 1234567890 
 "!\`?'.,;:()[]{}<>|/@\\^$-%+=#_&~*
-活跃天数角色数量成就达成深境螺旋世界探索
+活躍天數角色數成就達成深境螺旋世界探索
 `
 
 fs.readdirSync(skinPath).forEach(img => {
@@ -55,7 +55,7 @@ const txt2woff2 = text => {
   return new Promise((resolve, reject) => {
     let cachedData = woff2Cache.get(key)
     if (cachedData) {
-      logger.info('从缓存中获取子集化字体 %s', key)
+      logger.info('從快取中取得子集化字體 %s', key)
       resolve(cachedData)
     } else {
       const fontmin = new Fontmin()
