@@ -18,56 +18,29 @@ app.get('/', (req, res) => {
 const CACHE_0 = 'max-age=0, no-cache, no-store, must-revalidate'
 const CACHE_10800 = 'max-age=10800'
 
-app.get('/:skin/:uid\.png', (req, res) => {
-  const { skin, uid } = req.params
-  logger.info('收到請求 uid:%s, skin:%s', uid, skin)
+const genshin_Card = (req, res, detail = false) => {
+  console.log("IN")
+  const { game, skin, uid } = req.params;
+  logger.info('收到請求 game:%s uid:%s, skin:%s', game, uid, skin);
 
-  userInfo(uid)
-    .then(data => {
-      svg({ data, skin })
-        .then(svgImage => {
-          res.set({
-            'content-type': 'image/svg+xml',
-            'cache-control': isNaN(skin) ? CACHE_0 : CACHE_10800
-          })
-
-          res.send(svgImage)
-        })
+  userInfo(game, uid, detail)
+    .then(data => svg({ data, skin, detail }))
+    .then(svgImage => {
+      res.set({
+        'content-type': 'image/svg+xml',
+        'cache-control': isNaN(skin) ? CACHE_0 : CACHE_10800,
+      });
+      res.send(svgImage);
     })
     .catch(err => {
       res.json({
         msg: err,
-        code: -1
-      })
-    })
-})
-
-app.get('/detail/:skin/:uid\.png', (req, res) => {
-  const { skin, uid } = req.params
-  logger.info('收到請求 uid:%s, skin:%s', uid, skin)
-
-  const detail = true
-
-  userInfo(uid, detail)
-    .then(data => {
-      svg({ data, skin, detail })
-        .then(svgImage => {
-          res.set({
-            'content-type': 'image/svg+xml',
-            'cache-control': isNaN(skin) ? CACHE_0 : CACHE_10800
-          })
-
-          res.send(svgImage)
-        })
-    })
-    .catch(err => {
-      res.json({
-        msg: err,
-        code: -1
-      })
-    })
-
-})
+        code: -1,
+      });
+    });
+};
+app.get('/:game/:skin/:uid\.png', (req, res) => genshin_Card(req, res));
+app.get('/:detail/:game/:skin/:uid\.png', (req, res) => genshin_Card(req, res, true));
 
 app.get('/heart-beat', (req, res) => {
   res.set({
