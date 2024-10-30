@@ -18,8 +18,7 @@ app.get('/', (req, res) => {
 const CACHE_0 = 'max-age=0, no-cache, no-store, must-revalidate'
 const CACHE_10800 = 'max-age=10800'
 
-const genshin_Card = (req, res, detail = false) => {
-  console.log("IN")
+const genshin_Card = (req, res, detail = false) => { 
   const { game, skin, uid } = req.params;
   logger.info('收到請求 game:%s uid:%s, skin:%s', game, uid, skin);
 

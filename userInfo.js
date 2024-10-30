@@ -71,7 +71,7 @@ const getRoleInfo = (uid) => {
   )
 }
 
-const userInfo = (game ,uid, detail=false) => {
+const userInfo = (game, uid, detail=false) => {
   return new Promise((resolve, reject) => {
     console.log(game, uid, detail)
     getRoleInfo(uid)
@@ -90,7 +90,6 @@ const userInfo = (game ,uid, detail=false) => {
           })
             .then(resp => {
               resp = JSON.parse(resp)
-              console.log(resp)
               if (resp.retcode === 0) {
                 const { world_explorations } = resp.data
                 const percentage = Math.min((world_explorations.reduce((total, next) => total + next.exploration_percentage, 0) / world_explorations.length / 10000 * 1000).toFixed(1), 100)
