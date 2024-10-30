@@ -23,7 +23,7 @@ const genshin_Card = (req, res, detail = false) => {
   logger.info('收到請求 game:%s uid:%s, skin:%s', game, uid, skin);
 
   userInfo(game, uid, detail)
-    .then(data => svg({ data, skin, detail }))
+    .then(data => svg({game, data, skin, detail }))
     .then(svgImage => {
       res.set({
         'content-type': 'image/svg+xml',

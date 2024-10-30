@@ -8,11 +8,18 @@ const md5 = require('md5')
 const pino = require('pino')
 const util = require('./index')
 
-const skinPath = path.resolve(__dirname, '../assets/skin')
+// const skinPath = path.resolve(__dirname, '../assets/skin')
 const woff2Cache = new NodeCache({ stdTTL: 60 * 60 * 24 * 365 })
 const logger = pino({ level: process.env.LOG_LEVEL || 'info' })
+const skinURL = "https://raw.githubusercontent.com/qhy040404/hoyo-card-assets/refs/heads/main"
+const skinlen = {
+  'hi3' : 1,
+  'gi' : 83,
+  'hsr' : 6,
+  'zzz' : 1
+}
 
-const skinList = {}
+// const skinList = {}
 
 const baseGlyph = `
 ABCDEFGHIJKLMNOPQRSTUVWXYZ
@@ -22,12 +29,12 @@ abcdefghijklmnopqrstuvwxyz
 活躍天數角色數成就達成深境螺旋世界探索
 `
 
-fs.readdirSync(skinPath).forEach(img => {
-  const imgPath = path.resolve(skinPath, img)
-  const name = path.parse(img).name
+// fs.readdirSync(skinPath).forEach(img => {
+//   const imgPath = path.resolve(skinPath, img)
+//   const name = path.parse(img).name
 
-  skinList[name] = convertToDatauri(imgPath)
-})
+//   skinList[name] = convertToDatauri(imgPath)
+// })
 
 function convertToDatauri(path) {
   const mime = mimeType.lookup(path)
@@ -46,7 +53,7 @@ function randomArr(arr) {
 
 function range(start, end) {
   if (start > end) [end, start] = [start, end]
-  return Array.from(new Array(parseInt(end) + 1).keys()).slice(parseInt(start))
+  return Array.from(new Array(parseInt(end)).keys()).slice(parseInt(start))
 }
 
 const txt2woff2 = text => {
@@ -83,10 +90,11 @@ const txt2woff2 = text => {
   })
 }
 
-const svg = async ({ data, skin = 0, detail = false }) => {
+const svg = async ({ game, data, skin = 0, detail = false }) => {
   // '2,5,9' -> [2, 5, 9]
   // '3-5' -> [3, 4, 5]
   // '3-5,7,9,12-15' -> [3, 4, 5, 7, 9, 12, 13, 14, 15]
+
   if (skin.includes(',')) {
     const skinArr = skin.split(',').reduce((arr, cur) => {
       if (cur) {
@@ -97,7 +105,6 @@ const svg = async ({ data, skin = 0, detail = false }) => {
           arr = arr.concat(parseInt(cur))
         }
       }
-
       return arr
     }, [])
     skin = randomArr(skinArr)
@@ -108,14 +115,17 @@ const svg = async ({ data, skin = 0, detail = false }) => {
     skin = randomArr(skinArr)
 
   } else if (skin === 'rand') {
-    skin = random(0, Object.keys(skinList).length)
+    skin = random(0, skinlen[game])
 
-  } else if (skin >= Object.keys(skinList).length) {
+  } else if (skin <= 0  || skin > skinlen[game]-1) {
     skin = 0
   }
 
+  if (game == 'gi') game = 'gs';
+  if (game == 'hsr') game = 'hi';
 
   const woff2 = await txt2woff2(data.nickname)
+  const bg = `${skinURL}/${game}/skin/${skin}.jpg`
 
   return new Promise((resolve, reject) => {
     const tpl = `<?xml version="1.0" encoding="UTF-8"?>
@@ -141,7 +151,7 @@ const svg = async ({ data, skin = 0, detail = false }) => {
                 position: absolute;
                 width: 100%;
                 height: 100%;
-                background-image: url(${skinList[skin]});
+                background-image: url(${bg});
                 background-size: 100%;
               }
 
@@ -325,7 +335,7 @@ const svg = async ({ data, skin = 0, detail = false }) => {
               .user-container.less .chest-list {
                 display: none;
               }
-              .user-container.less .bottom .section.spiral-abyss {
+              .user-container.less .bottom .section.spiral-abyss .section.role_combat"{
                 margin-right: auto;
               }
 
@@ -366,6 +376,10 @@ const svg = async ({ data, skin = 0, detail = false }) => {
                   <div class="section spiral-abyss">
                     <div class="val">{{spiral_abyss}}</div>
                     <div class="desc">深境螺旋</div>
+                  </div>
+                  <div class="section role_combat">
+                    <div class="val">第{{role_combat.max_round_id}}幕</div>
+                    <div class="desc">幻想真境劇詩</div>
                   </div>
                   <div class="section world-exploration">
                     <div class="val">{{world_exploration}}<span class="text percent">%</span></div>

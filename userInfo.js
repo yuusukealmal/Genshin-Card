@@ -38,7 +38,6 @@ const getRoleInfo = (uid) => {
     })
       .then(resp => {
         resp = JSON.parse(resp)
-        console.log(resp)
         if (resp.retcode === 0) {
           if (resp.data.list && resp.data.list.length > 0) {
             const roleInfo = resp.data.list.find(_ => _.game_id === 2)
@@ -73,11 +72,9 @@ const getRoleInfo = (uid) => {
 
 const userInfo = (game, uid, detail=false) => {
   return new Promise((resolve, reject) => {
-    console.log(game, uid, detail)
     getRoleInfo(uid)
       .then(roleInfo => {
         const { game_role_id, region } = roleInfo
-        if (detail) {
           http({
             method: "GET",
             url: __API.FETCH_ROLE_INDEX[game] + `?role_id=${game_role_id}&server=${region}`,
@@ -91,17 +88,34 @@ const userInfo = (game, uid, detail=false) => {
             .then(resp => {
               resp = JSON.parse(resp)
               if (resp.retcode === 0) {
-                const { world_explorations } = resp.data
-                const percentage = Math.min((world_explorations.reduce((total, next) => total + next.exploration_percentage, 0) / world_explorations.length / 10000 * 1000).toFixed(1), 100)
-                const world_exploration = percentage
-
-                const data = {
-                  uid: game_role_id,
-                  world_exploration,
-                  ...resp.data.stats,
-                  ...roleInfo
+                if (detail){
+                  const { world_explorations } = resp.data
+                  const percentage = Math.min((world_explorations.reduce((total, next) => total + next.exploration_percentage, 0) / world_explorations.length / 10000 * 1000).toFixed(1), 100)
+                  const world_exploration = percentage
+  
+                  const data = {
+                    uid: game_role_id,
+                    world_exploration,
+                    ...resp.data.stats,
+                    ...roleInfo
+                  }
+                  resolve(data)
+                } else{
+                  const {active_day_number, avatar_number, achievement_number, spiral_abyss, role_combat} = resp.data.stats
+                  const parsed = {
+                    active_day_number: active_day_number,
+                    avatar_number: avatar_number,
+                    achievement_number: achievement_number,
+                    spiral_abyss: spiral_abyss,
+                    role_combat : role_combat
+                  }
+                  const data = {
+                    uid: game_role_id,
+                    ...parsed,
+                    ...roleInfo
+                  }
+                  resolve(data)
                 }
-                resolve(data)
 
               } else {
                 logger.error('取得角色詳情介面報錯 %s', JSON.stringify(resp))
@@ -112,23 +126,6 @@ const userInfo = (game, uid, detail=false) => {
               logger.warn(err)
               reject(err)
             })
-        } else {
-          const [active_day_number, avatar_number, achievement_number, spiral_abyss] = roleInfo.data
-
-          const parsed = {
-            active_day_number: active_day_number.value,
-            avatar_number: avatar_number.value,
-            achievement_number: achievement_number.value,
-            spiral_abyss: spiral_abyss.value
-          }
-
-          const data = {
-            uid: game_role_id,
-            ...parsed,
-            ...roleInfo
-          }
-          resolve(data)
-        }
       })
       .catch(err => {
         logger.warn(err)
