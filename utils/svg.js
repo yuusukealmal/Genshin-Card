@@ -56,6 +56,8 @@ function range(start, end) {
   return Array.from(new Array(parseInt(end)).keys()).slice(parseInt(start))
 }
 
+const path = require('path');
+
 const txt2woff2 = (text) => {
   const key = '__woff2__' + md5(text);
 
@@ -66,7 +68,7 @@ const txt2woff2 = (text) => {
       resolve(cachedData);
     } else {
       const fontmin = new Fontmin()
-        .src('assets/fonts/HYWenHei-55W.ttf')
+        .src(path.join(__dirname, 'public/assets/fonts/HYWenHei-55W.ttf'))
         .use(Fontmin.glyph({
           text: baseGlyph + text,
           hinting: false
