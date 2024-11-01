@@ -16,5 +16,8 @@
             "src": "(.*)",
             "dest": "index.js"
         }
+    ],
+    "files": [
+        "assets/fonts/HYWenHei-55W.ttf"
     ]
 }
