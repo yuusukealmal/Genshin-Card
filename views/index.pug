@@ -52,8 +52,8 @@ html
         h5(style='display: inline-block; cursor: pointer;') 探索度
 
       p 由於配額限制，帶有探索度、寶箱數量和角色數量的圖片地址路由使用以下形式：
-      code https://genshin-card-phi.vercel.app/gi/detail/{背景編號}/{HoyoLab ID}.png
-      img(src="https://genshin-card-phi.vercel.app/gi/detail/42,51-56/298543184.png" alt="範例图片")
+      code https://genshin-card-phi.vercel.app/detail/gi/{背景編號}/{HoyoLab ID}.png
+      img(src="https://genshin-card-phi.vercel.app/detail/gi/42,51-56/298543184.png" alt="範例图片")
 
     //- details
     //-   summary(style='display: inline-block;', onclick='_evt_push("click", "normal", "more_theme")')
@@ -90,9 +90,9 @@ html
     h3 Tool
     .tool
       code Detail Info
-      input#detail(type='checkbox', checked=true, style='display: inline-block; width: 60px; height: 1.4em; line-height: 1.4em; margin: 0 4px; vertical-align: middle;')
+      input#detail(type='checkbox', style='display: inline-block; width: 60px; height: 1.4em; line-height: 1.4em; margin: 0 4px; vertical-align: middle;')
       <br>
-      code genshin-card-phi.vercel.app/
+      code https://genshin-card-phi.vercel.app/
       input#game(type='text', placeholder="hi3/hsr/gi/zzz", style='display: inline-block; width: 125px; height: 1.4em; line-height: 1.4em; margin: 0 4px; vertical-align: middle;')
       code /
       input#bgIdx(type='text', value='0', style='display: inline-block; width: 40px; height: 1.4em; line-height: 1.4em; margin: 0 4px; vertical-align: middle;')
@@ -130,6 +130,7 @@ html
 
     p.copyright
       a(href='https://replit.com/@journeyad/Genshin-Card', target='_blank', onclick='_evt_push("click", "normal", "view_sourcecode")') source code
+      br
       a(href='https://github.com/qhy040404/hoyo-card-assets/') picture database
 
     script.
