@@ -353,6 +353,11 @@ const svg = async ({ game, data, skin = 0, detail = false }) => {
                 margin-right: auto;
               }
 
+              .user-container.less .bottom .section.avatar-number,
+              .user-container.less .chest-list {
+                  display: none;
+              }
+
               @font-face {
                 font-family: HYWenHei;
                 src: url('data:font/woff2;base64,${woff2}') format('woff2');
