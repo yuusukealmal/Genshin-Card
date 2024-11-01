@@ -56,8 +56,6 @@ function range(start, end) {
   return Array.from(new Array(parseInt(end)).keys()).slice(parseInt(start))
 }
 
-const path = require('path');
-
 const txt2woff2 = (text) => {
   const key = '__woff2__' + md5(text);
 
