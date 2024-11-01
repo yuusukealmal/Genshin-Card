@@ -1,61 +1,19 @@
 # Hoyocard
 A fork from [Genshin-Card](https://replit.com/@journeyad/Genshin-Card)
+<br>
 Due to it only work on China Servers, I want to make it work on Global Servers and add some features.
 
-<p align="center"><img src="https://genshin-card.getloli.com/detail/2/160596100.png" alt="genshin-impact-card"></p>
+<p align="center"><img src="https://genshin-card-phi.vercel.app/gi/75/298543184.png" alt="genshin-impact-card"></p>
 
 # genshin-impact-card
 
 Genshin Impact user info card generator.
 
 ## Themes
-<details>
-<summary>All Themes</summary>
-
-![](https://genshin-card.getloli.com/detail/0/160596100.png)
-![](https://genshin-card.getloli.com/detail/1/160596100.png)
-![](https://genshin-card.getloli.com/detail/2/160596100.png)
-![](https://genshin-card.getloli.com/detail/3/160596100.png)
-![](https://genshin-card.getloli.com/detail/4/160596100.png)
-![](https://genshin-card.getloli.com/detail/5/160596100.png)
-![](https://genshin-card.getloli.com/detail/6/160596100.png)
-![](https://genshin-card.getloli.com/detail/7/160596100.png)
-![](https://genshin-card.getloli.com/detail/8/160596100.png)
-![](https://genshin-card.getloli.com/detail/9/160596100.png)
-![](https://genshin-card.getloli.com/detail/10/160596100.png)
-![](https://genshin-card.getloli.com/detail/11/160596100.png)
-![](https://genshin-card.getloli.com/detail/12/160596100.png)
-![](https://genshin-card.getloli.com/detail/13/160596100.png)
-![](https://genshin-card.getloli.com/detail/14/160596100.png)
-![](https://genshin-card.getloli.com/detail/15/160596100.png)
-![](https://genshin-card.getloli.com/detail/16/160596100.png)
-![](https://genshin-card.getloli.com/detail/17/160596100.png)
-![](https://genshin-card.getloli.com/detail/18/160596100.png)
-![](https://genshin-card.getloli.com/detail/19/160596100.png)
-![](https://genshin-card.getloli.com/detail/20/160596100.png)
-![](https://genshin-card.getloli.com/detail/21/160596100.png)
-![](https://genshin-card.getloli.com/detail/22/160596100.png)
-![](https://genshin-card.getloli.com/detail/23/160596100.png)
-![](https://genshin-card.getloli.com/detail/24/160596100.png)
-![](https://genshin-card.getloli.com/detail/25/160596100.png)
-![](https://genshin-card.getloli.com/detail/26/160596100.png)
-![](https://genshin-card.getloli.com/detail/27/160596100.png)
-![](https://genshin-card.getloli.com/detail/28/160596100.png)
-![](https://genshin-card.getloli.com/detail/29/160596100.png)
-![](https://genshin-card.getloli.com/detail/30/160596100.png)
-![](https://genshin-card.getloli.com/detail/31/160596100.png)
-![](https://genshin-card.getloli.com/detail/32/160596100.png)
-![](https://genshin-card.getloli.com/detail/33/160596100.png)
-![](https://genshin-card.getloli.com/detail/34/160596100.png)
-![](https://genshin-card.getloli.com/detail/35/160596100.png)
-![](https://genshin-card.getloli.com/detail/36/160596100.png)
-![](https://genshin-card.getloli.com/detail/37/160596100.png)
-![](https://genshin-card.getloli.com/detail/38/160596100.png)
-![](https://genshin-card.getloli.com/detail/39/160596100.png)
-</details>
+Get All Theme on [hoyo-card-assets](https://github.com/qhy040404/hoyo-card-assets/)
 
 ## Demo
-[https://genshin-card.getloli.com](https://genshin-card.getloli.com)
+[https://genshin-card-phi.vercel.app](https://genshin-card-phi.vercel.app)
 
 ## Usage
 
