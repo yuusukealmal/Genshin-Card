@@ -1,5 +1,6 @@
 const fs = require('fs')
 const path = require('path')
+const https = require('https')
 const mimeType = require('mime-types')
 const Fontmin = require('fontmin')
 const b2a = require('b3b').b2a
@@ -29,18 +30,24 @@ abcdefghijklmnopqrstuvwxyz
 活躍天數角色數成就達成深境螺旋世界探索
 `
 
-// fs.readdirSync(skinPath).forEach(img => {
-//   const imgPath = path.resolve(skinPath, img)
-//   const name = path.parse(img).name
-
-//   skinList[name] = convertToDatauri(imgPath)
-// })
-
-function convertToDatauri(path) {
-  const mime = mimeType.lookup(path)
-  const base64 = fs.readFileSync(path).toString('base64')
-
-  return `data:${mime};base64,${base64}`
+async function convertToBase64(url) {
+  return new Promise((resolve, reject) => {
+    https.get(url, (res) => {
+      const chunks = [];
+      res.on('data', (chunk) => {
+        chunks.push(chunk);
+      });
+      res.on('end', () => {
+        const buffer = Buffer.concat(chunks);
+        const base64 = buffer.toString('base64');
+        const mimeType = res.headers['content-type'];
+        console.log(`data:${mimeType};base64,${base64}`)
+        resolve(`data:${mimeType};base64,${base64}`);
+      });
+    }).on('error', (err) => {
+      reject(err);
+    });
+  });
 }
 
 function random(min, max) {
@@ -125,7 +132,7 @@ const svg = async ({ game, data, skin = 0, detail = false }) => {
   if (game == 'hsr') game = 'hi';
 
   const woff2 = await txt2woff2(data.nickname)
-  const bg = `${skinURL}/${game}/skin/${skin}.jpg`
+  const bg = await convertToBase64(`${skinURL}/${game}/skin/${skin}.jpg`)
 
   return new Promise((resolve, reject) => {
     const tpl = `<?xml version="1.0" encoding="UTF-8"?>
