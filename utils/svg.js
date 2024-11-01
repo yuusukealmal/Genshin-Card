@@ -66,7 +66,7 @@ const txt2woff2 = (text) => {
       resolve(cachedData);
     } else {
       const fontmin = new Fontmin()
-        .src(path.join(__dirname, 'public/assets/fonts/HYWenHei-55W.ttf'))
+        .src(path.join(__dirname, '../public/assets/fonts/HYWenHei-55W.ttf'))
         .use(Fontmin.glyph({
           text: baseGlyph + text,
           hinting: false
