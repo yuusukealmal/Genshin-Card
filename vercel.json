@@ -1,4 +1,19 @@
 {
-    "builds": [{ "src": "index.js", "use": "@now/node" }],
-    "routes": [{ "src": "(.*)", "dest": "index.js" }]
+    "builds": [
+        {
+            "src": "index.js",
+            "use": "@vercel/node",
+            "config": {
+                "includeFiles": [
+                    "node_modules/ttf2woff2/jssrc/ttf2woff2.wasm"
+                ]
+            }
+        }
+    ],
+    "routes": [
+        {
+            "src": "(.*)",
+            "dest": "index.js"
+        }
+    ]
 }
