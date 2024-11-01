@@ -28,13 +28,13 @@ html
     code https://genshin-card-phi.vercel.app/{遊戲代碼}/{背景編號}/{HoyoLab ID}.png
 
     h5 Img 標籤
-    code &lt;img src="https://genshin-card-phi.vercel.app//{背景編號}/{HoyoLab ID}.png" alt="genshin-card" />
+    code &lt;img src="https://genshin-card-phi.vercel.app/{遊戲代號}/{背景編號}/{HoyoLab ID}.png" alt="genshin-card" />
 
     h5 BBCode
-    code [img]https://genshin-card-phi.vercel.app/{背景編號}/{HoyoLab ID}.png[/img]
+    code [img]https://genshin-card-phi.vercel.app/{遊戲代號}/{背景編號}/{HoyoLab ID}.png[/img]
 
     h5 Markdown
-    code ![](https://genshin-card-phi.vercel.app/{背景編號}/{HoyoLab ID}.png)
+    code ![](https://genshin-card-phi.vercel.app/{遊戲代號}/{背景編號}/{HoyoLab ID}.png)
 
     h3 背景編號
     h5 <code>rand</code> 隨機背景
@@ -52,8 +52,8 @@ html
         h5(style='display: inline-block; cursor: pointer;') 探索度
 
       p 由於配額限制，帶有探索度、寶箱數量和角色數量的圖片地址路由使用以下形式：
-      code https://genshin-card-phi.vercel.app/detail/{背景編號}/{HoyoLab ID}.png
-      img(src="https://genshin-card-phi.vercel.app/detail/42,51-56/298543184.png" alt="範例图片")
+      code https://localhost:3000/detail/{背景編號}/{HoyoLab ID}.png
+      img(src="https://localhost:3000/detail/42,51-56/298543184.png" alt="範例图片")
 
     //- details
     //-   summary(style='display: inline-block;', onclick='_evt_push("click", "normal", "more_theme")')
@@ -63,7 +63,7 @@ html
     //-   each _, i in Array(109)
     //-     div(class='perview-card')
     //-       span #{i}
-    //-       img(class='lazy', data-src='https://genshin-card-phi.vercel.app/' + i + '/298543184.png')
+    //-       img(class='lazy', data-src='https://localhost:3000/' + i + '/298543184.png')
 
     h3 Credits
     ul
