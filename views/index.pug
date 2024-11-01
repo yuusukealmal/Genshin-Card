@@ -25,16 +25,16 @@ html
     h3 使用方法:
 
     h5 SVG 地址
-    code https://genshin-card.getloli.com/{背景編號}/{HoyoLab ID}.png
+    code https://genshin-card-phi.vercel.app/{遊戲代碼}/{背景編號}/{HoyoLab ID}.png
 
     h5 Img 標籤
-    code &lt;img src="https://genshin-card.getloli.com/{背景編號}/{HoyoLab ID}.png" alt="genshin-card" />
+    code &lt;img src="https://genshin-card-phi.vercel.app//{背景編號}/{HoyoLab ID}.png" alt="genshin-card" />
 
     h5 BBCode
-    code [img]https://genshin-card.getloli.com/{背景編號}/{HoyoLab ID}.png[/img]
+    code [img]https://genshin-card-phi.vercel.app/{背景編號}/{HoyoLab ID}.png[/img]
 
     h5 Markdown
-    code ![](https://genshin-card.getloli.com/{背景編號}/{米HoyoLab ID}.png)
+    code ![](https://genshin-card-phi.vercel.app/{背景編號}/{米HoyoLab ID}.png)
 
     h3 背景編號
     h5 <code>rand</code> 隨機背景
@@ -45,25 +45,25 @@ html
       3-5,7,9,12-15 -> [3, 4, 5, 7, 9, 12, 13, 14, 15]
 
     h3 範例:
-    img(src="https://genshin-card.getloli.com/rand/160596100.png" alt="範例图片")
+    img(src="https:/genshin-card-phi.vercel.app/75/298543184.png" alt="範例图片")
 
     details
       summary(style='display: inline-block;', onclick='_evt_push("click", "normal", "more_theme")')
         h5(style='display: inline-block; cursor: pointer;') 探索度
 
-      p 由於配額限制，帶有探索度和寶箱數量的圖片地址路由使用以下形式：
-      code https://genshin-card.getloli.com/detail/{背景編號}/{HoyoLab ID}.png
-      img(src="https://genshin-card.getloli.com/detail/42,51-56/160596100.png" alt="範例图片")
+      p 由於配額限制，帶有探索度、寶箱數量和角色數量的圖片地址路由使用以下形式：
+      code https://genshin-card-phi.vercel.app/detail/{背景編號}/{HoyoLab ID}.png
+      img(src="https://genshin-card-phi.vercel.app/detail/42,51-56/160596100.png" alt="範例图片")
 
-    details
-      summary(style='display: inline-block;', onclick='_evt_push("click", "normal", "more_theme")')
-        h3(style='display: inline-block; cursor: pointer;') 所有背景
-      p(style='margin: 0;') 替換地址中的背景編號為想要的即可（可以右鍵點擊在新分頁中開啟查看圖片地址）
-      p 目前共有<code>0 - 108</code>共 109 张背景图片
-      each _, i in Array(109)
-        div(class='perview-card')
-          span #{i}
-          img(class='lazy', data-src='https://genshin-card.getloli.com/' + i + '/160596100.png')
+    //- details
+    //-   summary(style='display: inline-block;', onclick='_evt_push("click", "normal", "more_theme")')
+    //-     h3(style='display: inline-block; cursor: pointer;') 所有背景
+    //-   p(style='margin: 0;') 替換地址中的背景編號為想要的即可（可以右鍵點擊在新分頁中開啟查看圖片地址）
+    //-   p 目前共有<code>0 - 108</code>共 109 张背景图片
+    //-   each _, i in Array(109)
+    //-     div(class='perview-card')
+    //-       span #{i}
+    //-       img(class='lazy', data-src='https://genshin-card-phi.vercel.app/' + i + '/160596100.png')
 
     h3 Credits
     ul
@@ -92,7 +92,7 @@ html
       code Detail Info
       input#detail(type='checkbox', checked=true, style='display: inline-block; width: 60px; height: 1.4em; line-height: 1.4em; margin: 0 4px; vertical-align: middle;')
       <br>
-      code https://localhost:3000/
+      code genshin-card-phi.vercel.app/
       input#game(type='text', placeholder="hi3/hsr/gi/zzz", style='display: inline-block; width: 125px; height: 1.4em; line-height: 1.4em; margin: 0 4px; vertical-align: middle;')
       code /
       input#bgIdx(type='text', value='0', style='display: inline-block; width: 40px; height: 1.4em; line-height: 1.4em; margin: 0 4px; vertical-align: middle;')
@@ -130,6 +130,7 @@ html
 
     p.copyright
       a(href='https://replit.com/@journeyad/Genshin-Card', target='_blank', onclick='_evt_push("click", "normal", "view_sourcecode")') source code
+      a(href='https://github.com/qhy040404/hoyo-card-assets/', target='_blank', onclick='_evt_push("click", "normal", "view_picturedatabase")')picture database
 
     script.
       document.addEventListener("DOMContentLoaded", function() {
