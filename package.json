@@ -6,7 +6,8 @@
   "scripts": {
     "serve": "node index.js",
     "dev": "LOG_LEVEL=debug node index.js | ./node_modules/.bin/pino-pretty",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "cp ./node_modules/fontmin/node_modules/ttf2woff2/jssrc/ttf2woff2.wasm ./public/"
   },
   "keywords": [],
   "author": "journey-ad",
