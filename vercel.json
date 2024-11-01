@@ -5,6 +5,7 @@
             "use": "@vercel/node",
             "config": {
                 "includeFiles": [
+                    "views/**/*.pug",
                     "node_modules/ttf2woff2/jssrc/ttf2woff2.wasm"
                 ]
             }
