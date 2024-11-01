@@ -74,6 +74,7 @@ const userInfo = (game, uid, detail=false) => {
   return new Promise((resolve, reject) => {
     getRoleInfo(uid)
       .then(roleInfo => {
+        logger.info('取得角色信息成功, roleInfo %o', roleInfo)
         const { game_role_id, region } = roleInfo
           http({
             method: "GET",
@@ -87,6 +88,7 @@ const userInfo = (game, uid, detail=false) => {
           })
             .then(resp => {
               resp = JSON.parse(resp)
+              logger.info('取得角色詳情介面成功, resp %o', resp)
               if (resp.retcode === 0) {
                 if (detail){
                   const { world_explorations } = resp.data
