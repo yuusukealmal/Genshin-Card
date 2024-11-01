@@ -22,10 +22,10 @@ const CACHE_10800 = 'max-age=10800'
 
 const genshin_Card = (req, res, detail = false) => { 
   const { game, skin, uid } = req.params;
-  logger.info('收到請求 game:%s uid:%s, skin:%s', game, uid, skin);
+  logger.info('Received request: game:%s uid:%s, skin:%s', game, uid, skin);
 
   userInfo(game, uid, detail)
-    .then(data => svg({game, data, skin, detail }))
+    .then(data => svg({ game, data, skin, detail }))
     .then(svgImage => {
       res.set({
         'content-type': 'image/svg+xml',
@@ -34,8 +34,10 @@ const genshin_Card = (req, res, detail = false) => {
       res.send(svgImage);
     })
     .catch(err => {
+      console.error("Error in genshin_Card:", err);
+
       res.json({
-        msg: err,
+        msg: err.message || String(err) || 'An unknown error occurred',
         code: -1,
       });
     });
