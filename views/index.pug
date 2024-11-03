@@ -92,7 +92,7 @@ html
       code Detail Info
       input#detail(type='checkbox', style='display: inline-block; width: 60px; height: 1.4em; line-height: 1.4em; margin: 0 4px; vertical-align: middle;')
       <br>
-      code https://genshin-card-phi.vercel.app/
+      code http://localhost:3000/
       input#game(type='text', placeholder="hi3/hsr/gi/zzz", style='display: inline-block; width: 125px; height: 1.4em; line-height: 1.4em; margin: 0 4px; vertical-align: middle;')
       code /
       input#bgIdx(type='text', value='0', style='display: inline-block; width: 40px; height: 1.4em; line-height: 1.4em; margin: 0 4px; vertical-align: middle;')
@@ -119,10 +119,10 @@ html
             return
           }
           if (detail.checked){
-            img.src = 'https://genshin-card-phi.vercel.app/detail/' + game + '/' + bgIdx + '/' + uid + '.png'
+            img.src = 'http://localhost:3000/detail/' + game + '/' + bgIdx + '/' + uid + '.png'
           }
           else{
-            img.src = 'https://genshin-card-phi.vercel.app/' + game + '/' + bgIdx + '/' + uid + '.png'
+            img.src = 'http://localhost:3000/' + game + '/' + bgIdx + '/' + uid + '.png'
           }
         })
 
