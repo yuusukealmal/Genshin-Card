@@ -54,7 +54,7 @@ function range(start, end) {
   return Array.from(new Array(parseInt(end)).keys()).slice(parseInt(start))
 }
 
-const txt2woff2 = (text) => {
+const txt2woff2 = (game, text) => {
   const key = '__woff2__' + md5(text);
 
   return new Promise((resolve, reject) => {
@@ -129,12 +129,13 @@ const svg = async ({ game, data, skin = 0, detail = false }) => {
   if (game == 'gi') game = 'gs';
   if (game == 'hsr') game = 'hi';
 
-  const woff2 = await txt2woff2(data.nickname)
-  const bg = await convertToBase64(`${skinURL}/${game}/skin/${skin}.jpg`)
+  const woff2 = await txt2woff2(game, data.nickname)
+  const bg = await convertToBase64(`${SKIN_URL}/${game}/skin/${skin}.jpg`)
 
   return new Promise((resolve, reject) => {
     const functions = {
-      "gs": gi
+      'gs': GI,
+      'zzz': ZZZ
   };
     const tpl = functions[game](bg, woff2, detail)
 

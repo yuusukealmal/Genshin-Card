@@ -63,7 +63,7 @@ const getRoleInfo = (game, uid) => {
 
 const userInfo = (game, uid, detail=false) => {
   return new Promise((resolve, reject) => {
-    getRoleInfo(uid)
+    getRoleInfo(game, uid)
       .then(roleInfo => {
         const { game_role_id, region } = roleInfo
           http({
@@ -99,8 +99,8 @@ const userInfo = (game, uid, detail=false) => {
                       const {active_day_number, avatar_number, achievement_number, spiral_abyss, role_combat} = resp.data.stats
                       const parsed = {
                         active_day_number: active_day_number,
-                        avatar_number: avatar_number,
                         achievement_number: achievement_number,
+                        avatar_number: avatar_number,
                         spiral_abyss: spiral_abyss,
                         role_combat : role_combat
                       }
@@ -115,7 +115,35 @@ const userInfo = (game, uid, detail=false) => {
                   case 'hsr':
                     break;
                   case 'zzz':
-                    break;
+                    if (detail){
+                      const { commemorative_coins_list } = resp.data.stats
+                      const commemorative_coins = commemorative_coins_list[0].num
+                      // const { cat_notes_list } = resp.data
+                      // const { num , total } = cat_notes_list.reduce((total, next)=> ({ num: total.num + next.num, total: total.total + next.total }), {num:0, total:0})
+                      // const world_exploration = Math.round(num / total * 10000)/ 100
+                      const data = {
+                        uid: game_role_id,
+                        // world_exploration,
+                        commemorative_coins,
+                        ...resp.data.stats,
+                        ...roleInfo
+                      }
+                      resolve(data)
+                    } else{
+                      const { active_days, avatar_num, buddy_num, achievement_count} = resp.data.stats
+                      const parsed = {
+                        active_days: active_days,
+                        achievement_count: achievement_count,
+                        avatar_num: avatar_num,
+                        buddy_num: buddy_num
+                      }
+                      const data = {
+                        uid: game_role_id,
+                        ...parsed,
+                        ...roleInfo
+                      }
+                      resolve(data)
+                    }
                 }
               } else {
                 logger.error('取得角色詳情介面報錯 %s', JSON.stringify(resp))
