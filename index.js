@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
 const CACHE_0 = 'max-age=0, no-cache, no-store, must-revalidate'
 const CACHE_10800 = 'max-age=10800'
 
-const genshin_Card = (req, res, detail = false) => { 
+const card = (req, res, detail = false) => { 
   const { game, skin, uid } = req.params;
   logger.info('收到請求 game:%s uid:%s, skin:%s', game, uid, skin);
 
@@ -33,13 +33,14 @@ const genshin_Card = (req, res, detail = false) => {
     })
     .catch(err => {
       res.json({
-        msg: err,
+        msg: err.message || String(err) || 'An unknown error occurred',
         code: -1,
       });
     });
 };
-app.get('/:game/:skin/:uid\.png', (req, res) => genshin_Card(req, res));
-app.get('/:detail/:game/:skin/:uid\.png', (req, res) => genshin_Card(req, res, true));
+
+app.get('/:game/:skin/:uid\.png', (req, res) => card(req, res));
+app.get('/:detail/:game/:skin/:uid\.png', (req, res) => card(req, res, true));
 
 app.get('/heart-beat', (req, res) => {
   res.set({
