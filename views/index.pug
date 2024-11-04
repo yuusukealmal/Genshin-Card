@@ -29,6 +29,7 @@ html
       }
 
   body
+
     h3 使用方法:
 
     h5 SVG 地址
@@ -95,12 +96,28 @@ html
         a(href='https://www.pixiv.net/artworks/85194788', target='_blank', rel='nofollow') みーな
 
     h3 Tool
+  table(style="width: 50%; border: 1px solid #ccc; border-collapse: collapse;")
+    tr
+      th 遊戲名稱
+      th 縮寫
+    tr
+      td 崩壞3
+      td hi3
+    tr
+      td 原神
+      td gi
+    tr
+      td 崩壞：星穹鐵道
+      td hsr
+    tr
+      td 絕區零
+      td zzz
     .tool
       code Detail Info
       input#detail(type='checkbox', style='display: inline-block; width: 60px; height: 1.4em; line-height: 1.4em; margin: 0 4px; vertical-align: middle;')
       <br>
       code http://localhost:3000/
-      input#game(type='text', placeholder="hi3/hsr/gi/zzz", style='display: inline-block; width: 125px; height: 1.4em; line-height: 1.4em; margin: 0 4px; vertical-align: middle;')
+      input#game(type='text', placeholder="hi3/gi/hsr/zzz", style='display: inline-block; width: 125px; height: 1.4em; line-height: 1.4em; margin: 0 4px; vertical-align: middle;')
       code /
       input#bgIdx(type='text', value='0', style='display: inline-block; width: 40px; height: 1.4em; line-height: 1.4em; margin: 0 4px; vertical-align: middle;')
       code /
