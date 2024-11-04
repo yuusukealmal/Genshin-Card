@@ -8,28 +8,11 @@ const NodeCache = require('node-cache')
 const md5 = require('md5')
 const pino = require('pino')
 const util = require('./index')
-const { gi } = require('./tpl')
+const { SKIN_URL, SKIN_LEN, BASE_GLYPH } = require('./routes')
+const { GI, ZZZ } = require('./tpl')
 
-// const skinPath = path.resolve(__dirname, '../assets/skin')
 const woff2Cache = new NodeCache({ stdTTL: 60 * 60 * 24 * 365 })
 const logger = pino({ level: process.env.LOG_LEVEL || 'info' })
-const skinURL = "https://raw.githubusercontent.com/qhy040404/hoyo-card-assets/refs/heads/main"
-const skinlen = {
-  'hi3' : 1,
-  'gi' : 83,
-  'hsr' : 6,
-  'zzz' : 1
-}
-
-// const skinList = {}
-
-const baseGlyph = `
-ABCDEFGHIJKLMNOPQRSTUVWXYZ
-abcdefghijklmnopqrstuvwxyz
-1234567890 
-"!\`?'.,;:()[]{}<>|/@\\^$-%+=#_&~*
-活躍天數角色數成就達成深境螺旋世界探索
-`
 
 async function convertToBase64(url) {
   return new Promise((resolve, reject) => {
@@ -42,7 +25,15 @@ async function convertToBase64(url) {
         const buffer = Buffer.concat(chunks);
         const base64 = buffer.toString('base64');
         const mimeType = res.headers['content-type'];
-        resolve(`data:${mimeType};base64,${base64}`);
+        if (mimeType.includes('image/jpeg')) {
+          resolve(`data:image/jpeg;base64,${base64}`);
+        } else if (mimeType.includes('image/png')) {
+            resolve(`data:image/png;base64,${base64}`);
+        } else {
+          convertToBase64(url.replace('jpg', 'png'))
+          .then(result => resolve(result))
+          .catch(err => reject(err));
+        }
       });
     }).on('error', (err) => {
       reject(err);
@@ -63,7 +54,7 @@ function range(start, end) {
   return Array.from(new Array(parseInt(end)).keys()).slice(parseInt(start))
 }
 
-const txt2woff2 = (text) => {
+const txt2woff2 = (game, text) => {
   const key = '__woff2__' + md5(text);
 
   return new Promise((resolve, reject) => {
@@ -75,7 +66,7 @@ const txt2woff2 = (text) => {
       const fontmin = new Fontmin()
         .src(path.join(__dirname, '../public/assets/fonts/HYWenHei-55W.ttf'))
         .use(Fontmin.glyph({
-          text: baseGlyph + text,
+          text: BASE_GLYPH[game] + text,
           hinting: false
         }))
         .use(Fontmin.ttf2woff({
@@ -86,7 +77,7 @@ const txt2woff2 = (text) => {
         if (err) {
           reject(err);
         } else if (files && files.length > 0) {
-          console.log('Generated files by Fontmin:', files.map(f => f.path));
+          // console.log('Generated files by Fontmin:', files.map(f => f.path));
           const fontFile = files[1] && files[1].contents ? files[1] : files[0];
           
           if (fontFile && fontFile.contents) {
@@ -129,21 +120,22 @@ const svg = async ({ game, data, skin = 0, detail = false }) => {
     skin = randomArr(skinArr)
 
   } else if (skin === 'rand') {
-    skin = random(0, skinlen[game])
+    skin = random(0, SKIN_LEN[game])
 
-  } else if (skin <= 0  || skin > skinlen[game]-1) {
+  } else if (skin <= 0  || skin > SKIN_LEN[game]-1) {
     skin = 0
   }
 
   if (game == 'gi') game = 'gs';
   if (game == 'hsr') game = 'hi';
 
-  const woff2 = await txt2woff2(data.nickname)
-  const bg = await convertToBase64(`${skinURL}/${game}/skin/${skin}.jpg`)
+  const woff2 = await txt2woff2(game, data.nickname)
+  const bg = await convertToBase64(`${SKIN_URL}/${game}/skin/${skin}.jpg`)
 
   return new Promise((resolve, reject) => {
     const functions = {
-      "gs": gi
+      'gs': GI,
+      'zzz': ZZZ
   };
     const tpl = functions[game](bg, woff2, detail)
 
