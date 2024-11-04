@@ -3,29 +3,20 @@ const NodeCache = require("node-cache")
 const http = require('./utils/http')
 const logger = pino({ level: process.env.LOG_LEVEL || 'info' });
 
+const { FETCH_ROLE_ID, FETCH_ROLE_INDEX, GAME_ID } = require('./utils/routes')
 const index = require('./utils/index');
 const roleIdCache = new NodeCache({ stdTTL: 60 * 60 * 24 * 365 });
 const userAgents = require('user-agents');
 const randomUserAgent = new userAgents({ deviceCategory: 'desktop' }).toString(); // this will break if hoyolab starts to tie tokens to user agents
 
-const __API = {
-  FETCH_ROLE_ID: 'https://bbs-api-os.hoyolab.com/game_record/card/wapi/getGameRecordCard',
-  FETCH_ROLE_INDEX: {
-    'hi3' : 'https://bbs-api-os.hoyolab.com/game_record/honkai3rd/api/index', 
-    'gi' : 'https://bbs-api-os.hoyolab.com/game_record/genshin/api/index',
-    'hsr' : 'https://bbs-api-os.hoyolab.com/game_record/hkrpg/api/index',
-    'zzz' : 'https://sg-act-nap-api.hoyolab.com/event/game_record_zzz/api/zzz/index'
-  }
-}
-
-const getRoleInfo = (uid) => {
+const getRoleInfo = (game, uid) => {
   const key = `__uid__${uid}`
 
   return new Promise((resolve, reject) => {
 
     http({
       method: "GET",
-      url: __API.FETCH_ROLE_ID + `?uid=${uid}`,
+      url: FETCH_ROLE_ID + `?uid=${uid}`,
       headers: {
         "User-Agent": randomUserAgent,
         "Accept": "application/json, text/plain, */*",
@@ -40,7 +31,7 @@ const getRoleInfo = (uid) => {
         resp = JSON.parse(resp)
         if (resp.retcode === 0) {
           if (resp.data.list && resp.data.list.length > 0) {
-            const roleInfo = resp.data.list.find(_ => _.game_id === 2)
+            const roleInfo = resp.data.list.find(_ => _.game_id === GAME_ID[game])
 
             if (!roleInfo) {
               logger.warn('無角色數據, uid %s', uid)
@@ -77,7 +68,7 @@ const userInfo = (game, uid, detail=false) => {
         const { game_role_id, region } = roleInfo
           http({
             method: "GET",
-            url: __API.FETCH_ROLE_INDEX[game] + `?role_id=${game_role_id}&server=${region}`,
+            url: FETCH_ROLE_INDEX[game] + `?role_id=${game_role_id}&server=${region}`,
             headers: {
               "User-Agent": randomUserAgent,
               "Accept": "application/json, text/plain, */*",
