@@ -11,7 +11,6 @@ const util = require('./index')
 const { SKIN_URL, SKIN_LEN, BASE_GLYPH } = require('./routes')
 const { GI, ZZZ } = require('./tpl')
 
-// const skinPath = path.resolve(__dirname, '../assets/skin')
 const woff2Cache = new NodeCache({ stdTTL: 60 * 60 * 24 * 365 })
 const logger = pino({ level: process.env.LOG_LEVEL || 'info' })
 
@@ -70,7 +69,7 @@ const txt2woff2 = (text) => {
         if (err) {
           reject(err);
         } else if (files && files.length > 0) {
-          console.log('Generated files by Fontmin:', files.map(f => f.path));
+          // console.log('Generated files by Fontmin:', files.map(f => f.path));
           const fontFile = files[1] && files[1].contents ? files[1] : files[0];
           
           if (fontFile && fontFile.contents) {
