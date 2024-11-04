@@ -25,7 +25,15 @@ async function convertToBase64(url) {
         const buffer = Buffer.concat(chunks);
         const base64 = buffer.toString('base64');
         const mimeType = res.headers['content-type'];
-        resolve(`data:${mimeType};base64,${base64}`);
+        if (mimeType.includes('image/jpeg')) {
+          resolve(`data:image/jpeg;base64,${base64}`);
+        } else if (mimeType.includes('image/png')) {
+            resolve(`data:image/png;base64,${base64}`);
+        } else {
+          convertToBase64(url.replace('jpg', 'png'))
+          .then(result => resolve(result))
+          .catch(err => reject(err));
+        }
       });
     }).on('error', (err) => {
       reject(err);
