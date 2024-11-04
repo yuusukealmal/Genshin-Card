@@ -1,5 +1,6 @@
 const express = require('express')
 const compression = require('compression')
+const path = require('path')
 const pino = require('pino');
 const { getRoleInfo, userInfo } = require('./userInfo')
 const svg = require('./utils/svg')
