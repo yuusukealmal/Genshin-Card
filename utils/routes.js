@@ -1,3 +1,10 @@
+const HEADERS = {
+    "Accept": "application/json, text/plain, */*",
+    "x-rpc-language": "zh-tw",
+    'x-rpc-app_version': '2.40.1',
+    'x-rpc-client_type': 5
+}
+
 const FETCH_ROLE_ID = 'https://bbs-api-os.hoyolab.com/game_record/card/wapi/getGameRecordCard'
 
 const FETCH_ROLE_INDEX = {
@@ -31,6 +38,7 @@ const BASE_GLYPH = {
 }
 
 module.exports = {
+    HEADERS,
     FETCH_ROLE_ID,
     FETCH_ROLE_INDEX,
     GAME_ID,
