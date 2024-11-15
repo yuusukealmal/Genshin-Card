@@ -21,6 +21,19 @@ const GAME_ID = {
     'zzz': 8
 }
 
+const COLOR = {
+    "White": 16777215,
+    "Greyple": 10070709,
+    "Black": 2303786,
+    "DarkButNotBlack": 2895667,
+    "NotQuiteBlack": 2303786,
+    "Blurple": 5793266,
+    "Green": 5763719,
+    "Yellow":	16705372,
+    "Fuchsia": 15418782,
+    "Red": 15548997,
+}
+
 const SKIN_URL = 'https://raw.githubusercontent.com/qhy040404/hoyo-card-assets/refs/heads/main'
 
 const SKIN_LEN = {
@@ -42,6 +55,7 @@ module.exports = {
     FETCH_ROLE_ID,
     FETCH_ROLE_INDEX,
     GAME_ID,
+    COLOR,
     SKIN_URL,
     SKIN_LEN,
     BASE_GLYPH

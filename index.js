@@ -2,6 +2,7 @@ const express = require('express')
 const compression = require('compression')
 const pino = require('pino');
 const { getRoleInfo, userInfo } = require('./userInfo')
+const { webhook } = require('./utils/http')
 const svg = require('./utils/svg')
 
 const logger = pino({ level: process.env.LOG_LEVEL || 'info' });
@@ -21,6 +22,7 @@ const CACHE_10800 = 'max-age=10800'
 const card = (req, res, detail = false) => { 
   const { game, skin, uid } = req.params;
   logger.info('收到請求 game:%s uid:%s, skin:%s', game, uid, skin);
+  webhook("GET Requests", `GAME = ${game}\nUID = ${uid}\nSKIN = ${skin}`)
 
   userInfo(game, uid, detail)
     .then(data => svg({game, data, skin, detail }))
