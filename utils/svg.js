@@ -14,32 +14,32 @@ const { GI, ZZZ } = require('./tpl')
 const woff2Cache = new NodeCache({ stdTTL: 60 * 60 * 24 * 365 })
 const logger = pino({ level: process.env.LOG_LEVEL || 'info' })
 
-// async function convertToBase64(url) {
-//   return new Promise((resolve, reject) => {
-//     https.get(url, (res) => {
-//       const chunks = [];
-//       res.on('data', (chunk) => {
-//         chunks.push(chunk);
-//       });
-//       res.on('end', () => {
-//         const buffer = Buffer.concat(chunks);
-//         const base64 = buffer.toString('base64');
-//         const mimeType = res.headers['content-type'];
-//         if (mimeType.includes('image/jpeg')) {
-//           resolve(`data:image/jpeg;base64,${base64}`);
-//         } else if (mimeType.includes('image/png')) {
-//             resolve(`data:image/png;base64,${base64}`);
-//         } else {
-//           convertToBase64(url.replace('jpg', 'png'))
-//           .then(result => resolve(result))
-//           .catch(err => reject(err));
-//         }
-//       });
-//     }).on('error', (err) => {
-//       reject(err);
-//     });
-//   });
-// }
+async function convertToBase64(url) {
+  return new Promise((resolve, reject) => {
+    https.get(url, (res) => {
+      const chunks = [];
+      res.on('data', (chunk) => {
+        chunks.push(chunk);
+      });
+      res.on('end', () => {
+        const buffer = Buffer.concat(chunks);
+        const base64 = buffer.toString('base64');
+        const mimeType = res.headers['content-type'];
+        if (mimeType.includes('image/jpeg')) {
+          resolve(`data:image/jpeg;base64,${base64}`);
+        } else if (mimeType.includes('image/png')) {
+            resolve(`data:image/png;base64,${base64}`);
+        } else {
+          convertToBase64(url.replace('jpg', 'png'))
+          .then(result => resolve(result))
+          .catch(err => reject(err));
+        }
+      });
+    }).on('error', (err) => {
+      reject(err);
+    });
+  });
+}
 
 function random(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min)
@@ -130,14 +130,14 @@ const svg = async ({ game, data, skin = 0, detail = false }) => {
   if (game == 'hsr') game = 'hi';
 
   const woff2 = await txt2woff2(game, data.nickname)
-  // const bg = await convertToBase64(`${SKIN_URL}/${game}/skin/${skin}.jpg`)
+  const bg = await convertToBase64(`${SKIN_URL}/${game}/skin/${skin}.jpg`)
 
   return new Promise((resolve, reject) => {
     const functions = {
       'gs': GI,
       'zzz': ZZZ
   };
-    const tpl = functions[game](`${SKIN_URL}/${game}/skin/${skin}.jpg`, woff2, detail)
+    const tpl = functions[game](bg, woff2, detail)
 
     resolve(util.render(tpl, data))
   })
