@@ -29,7 +29,7 @@ const card = (req, res, detail = false) => {
     .then(svgImage => {
       res.set({
         'content-type': 'image/svg+xml',
-        'cache-control': isNaN(skin) ? CACHE_0 : CACHE_10800,
+        // 'cache-control': isNaN(skin) ? CACHE_0 : CACHE_10800,
       });
       res.send(svgImage);
     })

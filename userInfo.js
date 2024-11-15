@@ -46,7 +46,7 @@ const getRoleInfo = (game, uid) => {
             logger.info('首次获取角色信息, uid %s, game_role_id %s, nickname %s, region %s, region_name %s', uid, game_role_id, nickname, region, region_name)
             webhook("First Time Get RoleInfo", `UID = ${uid}\nGAME_ROLE_ID = ${game_role_id}\nNICKNAME = ${nickname}\nREGION = ${region}\nREGION_NAME = ${region_name}`, COLOR.Green)
 
-            roleIdCache.set(key, roleInfo)
+            // roleIdCache.set(key, roleInfo)
 
             resolve(roleInfo)
           } else {
