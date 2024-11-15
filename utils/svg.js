@@ -66,7 +66,7 @@ const txt2woff2 = (game, text) => {
 
     // }
     const fontmin = new Fontmin()
-    .src(path.join(__dirname, '../public/assets/fonts/HYWenHei-55W.ttf'))
+    .src(path.join(__dirname, `../public/assets/fonts/${game}.ttf`))
     .use(Fontmin.glyph({
       text: BASE_GLYPH[game] + text,
       hinting: false
@@ -128,7 +128,7 @@ const svg = async ({ game, data, skin = 0, detail = false }) => {
   }
 
   if (game == 'gi') game = 'gs';
-  if (game == 'hsr') game = 'hi';
+  if (game == 'hsr') game = 'sr';
 
   const woff2 = await txt2woff2(game, data.nickname)
   const bg = await convertToBase64(`${SKIN_URL}/${game}/skin/${skin}.jpg`)
