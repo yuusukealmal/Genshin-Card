@@ -1,9 +1,9 @@
 const pino = require('pino');
 const NodeCache = require("node-cache")
-const http = require('./utils/http')
+const { http, webhook } = require('./utils/http')
 const logger = pino({ level: process.env.LOG_LEVEL || 'info' });
 
-const { HEADERS, FETCH_ROLE_ID, FETCH_ROLE_INDEX, GAME_ID } = require('./utils/routes')
+const { HEADERS, FETCH_ROLE_ID, FETCH_ROLE_INDEX, GAME_ID, COLOR } = require('./utils/routes')
 const { getDS } = require('./utils/index');
 const roleIdCache = new NodeCache({ stdTTL: 60 * 60 * 24 * 365 });
 const userAgents = require('user-agents');
@@ -37,27 +37,32 @@ const getRoleInfo = (game, uid) => {
 
             if (!roleInfo) {
               logger.warn('無角色數據, uid %s', uid)
+              webhook("User Data Not Found", `UID = ${uid}`, COLOR.Yellow)
               reject('無角色數據，請檢查輸入的米哈遊通行證ID是否有誤（非遊戲內的UID）和是否設置了公開角色信息，若操作無誤則可能是被米哈遊屏蔽，請第二天再試')
             }
 
             const { game_role_id, nickname, region, region_name } = roleInfo
 
             logger.info('首次获取角色信息, uid %s, game_role_id %s, nickname %s, region %s, region_name %s', uid, game_role_id, nickname, region, region_name)
+            webhook("First Time Get RoleInfo", `UID = ${uid}\nGAME_ROLE_ID = ${game_role_id}\nNICKNAME = ${nickname}\nREGION = ${region}\nREGION_NAME = ${region_name}`, COLOR.Green)
 
             roleIdCache.set(key, roleInfo)
 
             resolve(roleInfo)
           } else {
             logger.warn('無角色數據, uid %s', uid)
+            webhook("User Data Not Found", `UID = ${uid}`, COLOR.Yellow)
             reject('無角色數據，請檢查輸入的米哈遊通行證ID是否有誤（非遊戲內的UID）和是否設置了公開角色信息，若操作無誤則可能是被米哈遊屏蔽，請第二天再試')
           }
         } else {
           logger.error('取得角色ID介面報錯 %s', resp.message)
+          webhook("GET ROLE_INFO ERROR", resp.message, COLOR.Red)
           reject(resp.message)
         }
       })
       .catch(err => {
         logger.error('取得角色ID介面請求報錯 %o', err)
+        webhook("GET ROLE_INFO ERROR", resp.message, COLOR.Red)
       })
     }
   )
@@ -150,16 +155,19 @@ const userInfo = (game, uid, detail=false) => {
                 }
               } else {
                 logger.error('取得角色詳情介面報錯 %s', JSON.stringify(resp))
+                webhook("GET USER_INFO ERROR", JSON.stringify(resp), COLOR.Red)
                 reject(resp.message)
               }
             })
             .catch(err => {
               logger.warn(err)
+              webhook("RANDOM ERROR", JSON.stringify(err), COLOR.Yellow)
               reject(err)
             })
       })
       .catch(err => {
         logger.warn(err)
+        webhook("RANDOM ERROR", JSON.stringify(err), COLOR.Yellow)
         reject(err)
       })
     }

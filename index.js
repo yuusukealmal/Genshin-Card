@@ -1,8 +1,8 @@
 const express = require('express')
 const compression = require('compression')
-const path = require('path')
 const pino = require('pino');
 const { getRoleInfo, userInfo } = require('./userInfo')
+const { webhook } = require('./utils/http')
 const svg = require('./utils/svg')
 
 const logger = pino({ level: process.env.LOG_LEVEL || 'info' });
@@ -10,8 +10,7 @@ const logger = pino({ level: process.env.LOG_LEVEL || 'info' });
 const app = express()
 app.use(express.static('public'))
 app.use(compression())
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
+app.set('view engine', 'pug')
 
 app.get('/', (req, res) => {
   res.render('index')
@@ -22,10 +21,11 @@ const CACHE_10800 = 'max-age=10800'
 
 const card = (req, res, detail = false) => { 
   const { game, skin, uid } = req.params;
-  logger.info('Received request: game:%s uid:%s, skin:%s', game, uid, skin);
+  logger.info('收到請求 game:%s uid:%s, skin:%s', game, uid, skin);
+  webhook("GET Requests", `GAME = ${game}\nUID = ${uid}\nSKIN = ${skin}`)
 
   userInfo(game, uid, detail)
-    .then(data => svg({ game, data, skin, detail }))
+    .then(data => svg({game, data, skin, detail }))
     .then(svgImage => {
       res.set({
         'content-type': 'image/svg+xml',
