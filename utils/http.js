@@ -23,7 +23,6 @@ const webhook = (title, msg, color) =>
               {
                   "title": title,
                   "description": "```" + msg + "```",
-                  // "color": parseInt(Math.floor(Math.random() * 0xFFFFFF).toString(16).padStart(6, '0'), 16),
                   "color": color,
                   "timestamp": format(new Date().setHours(-11), 'yyyy-MM-dd HH:mm:ss')
               }

@@ -1,11 +1,9 @@
 const pino = require('pino');
-const NodeCache = require("node-cache")
 const { http, webhook } = require('./utils/http')
 const logger = pino({ level: process.env.LOG_LEVEL || 'info' });
 
 const { HEADERS, FETCH_ROLE_ID, FETCH_ROLE_INDEX, GAME_ID, COLOR } = require('./utils/routes')
 const { getDS } = require('./utils/index');
-const roleIdCache = new NodeCache({ stdTTL: 60 * 60 * 24 * 365 });
 const userAgents = require('user-agents');
 const randomUserAgent = new userAgents({ deviceCategory: 'desktop' }).toString(); // this will break if hoyolab starts to tie tokens to user agents
 
@@ -15,8 +13,6 @@ const headers = {
 }
 
 const getRoleInfo = (game, uid) => {
-  const key = `__uid__${uid}`
-
   return new Promise((resolve, reject) => {
     const qs = { uid }
     http({
@@ -45,8 +41,6 @@ const getRoleInfo = (game, uid) => {
 
             logger.info('首次获取角色信息, uid %s, game_role_id %s, nickname %s, region %s, region_name %s', uid, game_role_id, nickname, region, region_name)
             webhook("First Time Get RoleInfo", `UID = ${uid}\nGAME_ROLE_ID = ${game_role_id}\nNICKNAME = ${nickname}\nREGION = ${region}\nREGION_NAME = ${region_name}`, COLOR.Green)
-
-            // roleIdCache.set(key, roleInfo)
 
             resolve(roleInfo)
           } else {
@@ -126,12 +120,8 @@ const userInfo = (game, uid, detail=false) => {
                     if (detail){
                       const { commemorative_coins_list } = resp.data.stats
                       const commemorative_coins = commemorative_coins_list[0].num
-                      // const { cat_notes_list } = resp.data
-                      // const { num , total } = cat_notes_list.reduce((total, next)=> ({ num: total.num + next.num, total: total.total + next.total }), {num:0, total:0})
-                      // const world_exploration = Math.round(num / total * 10000)/ 100
                       const data = {
                         uid: game_role_id,
-                        // world_exploration,
                         commemorative_coins,
                         ...resp.data.stats,
                         ...roleInfo

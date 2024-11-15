@@ -1,7 +1,7 @@
 const express = require('express')
 const compression = require('compression')
 const pino = require('pino');
-const { getRoleInfo, userInfo } = require('./userInfo')
+const { userInfo } = require('./userInfo')
 const { webhook } = require('./utils/http')
 const svg = require('./utils/svg')
 
@@ -16,8 +16,6 @@ app.get('/', (req, res) => {
   res.render('index')
 });
 
-const CACHE_0 = 'max-age=0, no-cache, no-store, must-revalidate'
-const CACHE_10800 = 'max-age=10800'
 
 const card = (req, res, detail = false) => { 
   const { game, skin, uid } = req.params;
@@ -29,7 +27,6 @@ const card = (req, res, detail = false) => {
     .then(svgImage => {
       res.set({
         'content-type': 'image/svg+xml',
-        // 'cache-control': isNaN(skin) ? CACHE_0 : CACHE_10800,
       });
       res.send(svgImage);
     })

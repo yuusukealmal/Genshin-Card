@@ -62,16 +62,6 @@ html
       code https://hoyocard.vercel.app/detail/gi/{背景編號}/{HoyoLab ID}.png
       img(src="https://hoyocard.vercel.app/detail/gi/42,51-56/298543184.png" alt="範例图片")
 
-    //- details
-    //-   summary(style='display: inline-block;', onclick='_evt_push("click", "normal", "more_theme")')
-    //-     h3(style='display: inline-block; cursor: pointer;') 所有背景
-    //-   p(style='margin: 0;') 替換地址中的背景編號為想要的即可（可以右鍵點擊在新分頁中開啟查看圖片地址）
-    //-   p 目前共有<code>0 - 108</code>共 109 张背景图片
-    //-   each _, i in Array(109)
-    //-     div(class='perview-card')
-    //-       span #{i}
-    //-       img(class='lazy', data-src='https://localhost:3000/' + i + '/298543184.png')
-
     h3 Credits
     ul
       li
@@ -148,8 +138,6 @@ html
             img.src = 'https://hoyocard.vercel.app/' + game + '/' + bgIdx + '/' + uid + '.png'
           }
         })
-
-    //- iframe(src="https://chat.getloli.com/room/@genshin-impact-card?title=%E5%8E%9F%E7%A5%9E%E7%8E%A9%E5%AE%B6%E4%BF%A1%E6%81%AF%E5%8D%A1%E7%89%87%E7%9A%84%E7%95%99%E8%A8%80%E6%9D%BF", scrolling="no", frameborder="0", height="70%", width="26%", style="position: fixed;top: 2%;right: 5%;")
 
     p.copyright
       a(href='https://replit.com/@journeyad/Genshin-Card', target='_blank', onclick='_evt_push("click", "normal", "view_sourcecode")') source code
