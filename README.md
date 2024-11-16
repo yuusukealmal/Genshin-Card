@@ -1,3 +1,6 @@
+# Only Support for `Genshin` and `ZZZ` until i find why i cant request the API
+
+
 # Hoyocard
 A fork from [Genshin-Card](https://replit.com/@journeyad/Genshin-Card)
 <br>
