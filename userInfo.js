@@ -68,23 +68,20 @@ const userInfo = (game, uid, detail=false) => {
       .then(roleInfo => {
         const { game_role_id, region } = roleInfo
         const qs = { role_id: game_role_id, server: region }
-        if (game == "hsr" || game == "hi3"){
-          switch(game){
-            case 'hi3':
-              break;
-            case 'hsr':
-              const parsed = roleInfo.data.reduce((obj, item, index) => {
-                obj[["active_days", "avatar_number", "achievement_number", "chest_count"][index]] = item.value;
-                return obj;
-              }, {});
-              const data = {
-                uid: game_role_id,
-                ...parsed,
-                ...roleInfo
-              }
-              resolve(data)
-          }
-        }
+        if (game === "hsr" || game === "hi3") {
+          const hsr = ["active_days", "avatar_number", "achievement_number", "chest_count"]
+          const hi3 = ["active_days", "battlesuits_owned", "outfits", "q_manifold"]
+          const parsed = roleInfo.data.reduce((obj, item, index) => {
+            obj[game === "hsr" ? hsr[index] : hi3[index]] = item.value;
+            return obj;
+          }, {});
+          const data = {
+            uid: game_role_id,
+            ...parsed,
+            ...roleInfo
+          };
+          resolve(data);
+        } 
         else{
           http({
             method: "GET",
@@ -156,6 +153,7 @@ const userInfo = (game, uid, detail=false) => {
                       }
                       resolve(data)
                     }
+                    break;
                 }
               } else {
                 logger.error('取得角色詳情介面報錯 %s', JSON.stringify(resp))

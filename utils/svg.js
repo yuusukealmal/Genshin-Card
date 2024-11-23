@@ -5,7 +5,7 @@ const b2a = require('b3b').b2a
 const md5 = require('md5')
 const util = require('./index')
 const { SKIN_URL, SKIN_LEN, BASE_GLYPH } = require('./routes')
-const { GI, HSR, ZZZ } = require('./tpl')
+const { HI3, GI, HSR, ZZZ } = require('./tpl')
 
 async function convertToBase64(url) {
   return new Promise((resolve, reject) => {
@@ -118,6 +118,7 @@ const svg = async ({ game, data, skin = 0, detail = false }) => {
 
   return new Promise((resolve, reject) => {
     const functions = {
+      'hi3': HI3,
       'gs': GI,
       'sr': HSR,
       'zzz': ZZZ

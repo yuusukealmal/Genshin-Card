@@ -1,3 +1,218 @@
+const HI3 = (bg, woff2, detail) =>`<svg width="500" height="165" version="1.1" xmlns="http://www.w3.org/2000/svg"
+xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>Honkai Impact 3rd User Card</title>
+<foreignObject width="1000" height="330" transform="scale(.5)">
+
+    <body xmlns="http://www.w3.org/1999/xhtml">
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                user-select: none;
+            }
+
+            body {
+                width: 100%;
+                height: 100%;
+                font-family: HYWenHei;
+                font-size: 26px;
+                color: #fff;
+            }
+
+            .user-container {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background-image: url(${bg});
+                background-size: 100%;
+            }
+
+            .top {
+                position: absolute;
+                display: flex;
+                width: 100%;
+                height: 125px;
+                padding-bottom: 20px;
+                background-image: inherit;
+                background-size: 100%;
+                text-shadow: 0px 0px 10px rgba(19, 19, 19, 50%);
+            }
+
+            .top::before,
+            .top::after {
+                content: '';
+                position: absolute;
+                width: 100%;
+                height: 100%;
+            }
+
+            .top::before {
+                background: inherit;
+                filter: blur(3px);
+                height: 100px;
+                opacity: 0.8;
+                z-index: 0;
+            }
+
+            .top::after {
+                background-image: linear-gradient(to bottom, rgba(0, 59, 86, .35), transparent);
+                z-index: 0;
+            }
+
+            .user-info {
+                position: relative;
+                display: inline-block;
+                width: 50%;
+                padding: 4px 20px;
+                z-index: 1;
+            }
+
+            .user-info .name-wrap {
+                display: flex;
+            }
+
+            .name-wrap .name {
+                font-size: 46px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .name-wrap .level {
+                margin-top: 12px;
+                margin-left: 8px;
+                font-size: 20px;
+                font-weight: bold;
+            }
+
+            .user-info .uid {
+                font-size: 26px;
+                margin-top: 2px;
+                line-height: 1;
+            }
+
+            .chest-list {
+                position: relative;
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                margin-left: auto;
+                margin-right: 18px;
+                height: 60px;
+                z-index: 1;
+            }
+
+            .bottom {
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+                height: 120px;
+                display: flex;
+                padding-top: 22px;
+                justify-content: space-around;
+                align-items: center;
+                background: inherit;
+                background-position: bottom;
+                text-shadow: 0px 0px 10px rgba(19, 19, 19, 50%);
+            }
+
+            .bottom::before,
+            .bottom::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+                height: 100%;
+            }
+
+            .bottom::before {
+                background: inherit;
+                height: 100px;
+                opacity: 0.8;
+                filter: blur(3px);
+                z-index: 0;
+            }
+
+            .bottom::after {
+                background-image: linear-gradient(to top, rgba(14, 114, 160, .35), transparent);
+                z-index: 0;
+            }
+
+            .bottom .section {
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-around;
+                min-width: 130px;
+                margin-right: 12px;
+                line-height: 1;
+                z-index: 1;
+            }
+
+            .bottom .section:last-of-type {
+                margin-right: auto;
+            }
+
+            .bottom .section .val {
+                font-size: 48px;
+                letter-spacing: -2px;
+            }
+
+            .bottom .section .val .percent {
+                font-size: 0.8em;
+                margin-left: 2px;
+            }
+
+            .bottom .section .desc {
+                font-size: 20px;
+                margin-top: 4px;
+            }
+                
+            .user-container.less .chest-list {
+                display: none;
+            }
+
+            @font-face {
+                font-family: HYWenHei;
+                src: url('data:font/woff2;base64,${woff2}') format('woff2');
+            }
+        </style>
+        <div class="user-container ${detail ? '' : 'less'}">
+            <div class="top">
+                <div class="user-info">
+                    <div class="name-wrap">
+                        <div class="name">{{nickname}}</div>
+                        <div class="level">Lv.{{level}}</div>
+                    </div>
+                    <div class="uid">UID: {{uid}}</div>
+                </div>
+            </div>
+            <div class="bottom">
+                <div class="section active-days">
+                    <div class="val">{{active_days}}</div>
+                    <div class="desc">累計登艦</div>
+                </div>
+                <div class="section battlesuits_owned">
+                    <div class="val">{{battlesuits_owned}}</div>
+                    <div class="desc">裝甲數</div>
+                </div>
+                <div class="section outfits">
+                    <div class="val">{{outfits}}</div>
+                    <div class="desc">服裝數</div>
+                </div>
+                <div class="section q_manifold">
+                    <div class="val">{{q_manifold}}</div>
+                    <div class="desc">量子流形</div>
+                </div>
+            </div>
+        </div>
+    </body>
+</foreignObject>
+</svg>
+`
+
 const GI = (bg, woff2, detail) =>`<svg width="500" height="165" version="1.1" xmlns="http://www.w3.org/2000/svg"
 xmlns:xlink="http://www.w3.org/1999/xlink">
 <title>Genshin Impact User Card</title>
@@ -275,6 +490,7 @@ const HSR = (bg, woff2, detail) =>`<svg width="500" height="165" version="1.1" x
 xmlns:xlink="http://www.w3.org/1999/xlink">
 <title>Honkai: Star Rail User Card</title>
 <foreignObject width="1000" height="330" transform="scale(.5)">
+
     <body xmlns="http://www.w3.org/1999/xhtml">
         <style>
             * {
@@ -283,6 +499,7 @@ xmlns:xlink="http://www.w3.org/1999/xlink">
                 box-sizing: border-box;
                 user-select: none;
             }
+
             body {
                 width: 100%;
                 height: 100%;
@@ -290,6 +507,7 @@ xmlns:xlink="http://www.w3.org/1999/xlink">
                 font-size: 26px;
                 color: #fff;
             }
+
             .user-container {
                 position: absolute;
                 width: 100%;
@@ -297,6 +515,7 @@ xmlns:xlink="http://www.w3.org/1999/xlink">
                 background-image: url(${bg});
                 background-size: 100%;
             }
+
             .top {
                 position: absolute;
                 display: flex;
@@ -307,6 +526,7 @@ xmlns:xlink="http://www.w3.org/1999/xlink">
                 background-size: 100%;
                 text-shadow: 0px 0px 10px rgba(19, 19, 19, 50%);
             }
+
             .top::before,
             .top::after {
                 content: '';
@@ -314,6 +534,7 @@ xmlns:xlink="http://www.w3.org/1999/xlink">
                 width: 100%;
                 height: 100%;
             }
+
             .top::before {
                 background: inherit;
                 filter: blur(3px);
@@ -321,10 +542,12 @@ xmlns:xlink="http://www.w3.org/1999/xlink">
                 opacity: 0.8;
                 z-index: 0;
             }
+
             .top::after {
                 background-image: linear-gradient(to bottom, rgba(0, 59, 86, .35), transparent);
                 z-index: 0;
             }
+
             .user-info {
                 position: relative;
                 display: inline-block;
@@ -332,26 +555,31 @@ xmlns:xlink="http://www.w3.org/1999/xlink">
                 padding: 4px 20px;
                 z-index: 1;
             }
+
             .user-info .name-wrap {
                 display: flex;
             }
+
             .name-wrap .name {
                 font-size: 46px;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
             }
+
             .name-wrap .level {
                 margin-top: 12px;
                 margin-left: 8px;
                 font-size: 20px;
                 font-weight: bold;
             }
+
             .user-info .uid {
                 font-size: 26px;
                 margin-top: 2px;
                 line-height: 1;
             }
+
             .chest-list {
                 position: relative;
                 display: flex;
@@ -362,6 +590,7 @@ xmlns:xlink="http://www.w3.org/1999/xlink">
                 height: 60px;
                 z-index: 1;
             }
+
             .bottom {
                 position: absolute;
                 bottom: 0;
@@ -375,6 +604,7 @@ xmlns:xlink="http://www.w3.org/1999/xlink">
                 background-position: bottom;
                 text-shadow: 0px 0px 10px rgba(19, 19, 19, 50%);
             }
+
             .bottom::before,
             .bottom::after {
                 content: '';
@@ -383,6 +613,7 @@ xmlns:xlink="http://www.w3.org/1999/xlink">
                 width: 100%;
                 height: 100%;
             }
+
             .bottom::before {
                 background: inherit;
                 height: 100px;
@@ -390,10 +621,12 @@ xmlns:xlink="http://www.w3.org/1999/xlink">
                 filter: blur(3px);
                 z-index: 0;
             }
+
             .bottom::after {
                 background-image: linear-gradient(to top, rgba(14, 114, 160, .35), transparent);
                 z-index: 0;
             }
+
             .bottom .section {
                 position: relative;
                 display: flex;
@@ -405,17 +638,21 @@ xmlns:xlink="http://www.w3.org/1999/xlink">
                 line-height: 1;
                 z-index: 1;
             }
+
             .bottom .section:last-of-type {
                 margin-right: auto;
             }
+
             .bottom .section .val {
                 font-size: 48px;
                 letter-spacing: -2px;
             }
+
             .bottom .section .val .percent {
                 font-size: 0.8em;
                 margin-left: 2px;
             }
+
             .bottom .section .desc {
                 font-size: 20px;
                 margin-top: 4px;
@@ -424,6 +661,7 @@ xmlns:xlink="http://www.w3.org/1999/xlink">
             .user-container.less .chest-list {
                 display: none;
             }
+
             @font-face {
                 font-family: HYWenHei;
                 src: url('data:font/woff2;base64,${woff2}') format('woff2');
@@ -693,6 +931,7 @@ xmlns:xlink="http://www.w3.org/1999/xlink">
 `
 
 module.exports = {
+    HI3,
     GI,
     HSR,
     ZZZ
