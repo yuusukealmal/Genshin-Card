@@ -9,7 +9,7 @@ const md5 = require('md5')
 const pino = require('pino')
 const util = require('./index')
 const { SKIN_URL, SKIN_LEN, BASE_GLYPH } = require('./routes')
-const { GI, ZZZ } = require('./tpl')
+const { GI, HSR, ZZZ } = require('./tpl')
 
 const woff2Cache = new NodeCache({ stdTTL: 60 * 60 * 24 * 365 })
 const logger = pino({ level: process.env.LOG_LEVEL || 'info' })
@@ -64,7 +64,7 @@ const txt2woff2 = (game, text) => {
       resolve(cachedData);
     } else {
       const fontmin = new Fontmin()
-        .src('assets/fonts/HYWenHei-55W.ttf')
+        .src(`assets/fonts/${game}.ttf`)
         .use(Fontmin.glyph({
           text: BASE_GLYPH[game] + text,
           hinting: false
@@ -127,7 +127,7 @@ const svg = async ({ game, data, skin = 0, detail = false }) => {
   }
 
   if (game == 'gi') game = 'gs';
-  if (game == 'hsr') game = 'hi';
+  if (game == 'hsr') game = 'sr';
 
   const woff2 = await txt2woff2(game, data.nickname)
   // const bg = await convertToBase64(`${SKIN_URL}/${game}/skin/${skin}.jpg`)
@@ -135,6 +135,7 @@ const svg = async ({ game, data, skin = 0, detail = false }) => {
   return new Promise((resolve, reject) => {
     const functions = {
       'gs': GI,
+      'sr': HSR,
       'zzz': ZZZ
   };
     const tpl = functions[game](`${SKIN_URL}/${game}/skin/${skin}.jpg`, woff2, detail)
