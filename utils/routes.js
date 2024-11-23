@@ -45,8 +45,8 @@ const SKIN_LEN = {
 
 const BASE_GLYPH = {
     'hi3': ``,
-    'gi': `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 "!\`?'.,;:()[]{}<>|/@\\^$-%+=#_&~*活躍天數成就達成角色數量深境螺旋世界探索`,
-    'hsr': ``,
+    'gi': `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 "!\`?'.,;:()[]{}<>|/@\\^$-%+=#_&~*活躍天數角色數量成就達成深境螺旋幻想真境劇詩世界探索`,
+    'hsr': `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 "!\`?'.,;:()[]{}<>|/@\\^$-%+=#_&~*活躍天數成就達成角色數量戰利品數量`,
     'zzz': `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 "!\`?'.,;:()[]{}<>|/@\\^$-%+=#_&~*活躍天數成就達成查協會紀念幣代理人數量邦布數量調式輿防衛戰世界探索`,
 }
 

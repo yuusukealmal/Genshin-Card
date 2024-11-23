@@ -68,6 +68,24 @@ const userInfo = (game, uid, detail=false) => {
       .then(roleInfo => {
         const { game_role_id, region } = roleInfo
         const qs = { role_id: game_role_id, server: region }
+        if (game == "hsr" || game == "hi3"){
+          switch(game){
+            case 'hi3':
+              break;
+            case 'hsr':
+              const parsed = roleInfo.data.reduce((obj, item, index) => {
+                obj[["active_days", "avatar_number", "achievement_number", "chest_count"][index]] = item.value;
+                return obj;
+              }, {});
+              const data = {
+                uid: game_role_id,
+                ...parsed,
+                ...roleInfo
+              }
+              resolve(data)
+          }
+        }
+        else{
           http({
             method: "GET",
             url: FETCH_ROLE_INDEX[game],
@@ -82,8 +100,6 @@ const userInfo = (game, uid, detail=false) => {
               resp = JSON.parse(resp)
               if (resp.retcode === 0) {
                 switch (game) {
-                  case 'hi3':
-                    break;
                   case 'gi':
                     if (detail){
                       const { world_explorations } = resp.data
@@ -113,8 +129,6 @@ const userInfo = (game, uid, detail=false) => {
                       }
                       resolve(data)
                     }
-                    break;
-                  case 'hsr':
                     break;
                   case 'zzz':
                     if (detail){
@@ -154,6 +168,7 @@ const userInfo = (game, uid, detail=false) => {
               webhook("RANDOM ERROR", JSON.stringify(err), COLOR.Yellow)
               reject(err)
             })
+        }
       })
       .catch(err => {
         logger.warn(err)
