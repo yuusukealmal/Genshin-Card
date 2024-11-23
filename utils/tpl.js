@@ -453,7 +453,7 @@ xmlns:xlink="http://www.w3.org/1999/xlink">
                     <div class="desc">角色數量</div>
                 </div>
                 <div class="section chest-count">
-                    <div class="val">{{avatar_number}}</div>
+                    <div class="val">{{chest_count}}</div>
                     <div class="desc">戰利品數量</div>
                 </div>
             </div>
