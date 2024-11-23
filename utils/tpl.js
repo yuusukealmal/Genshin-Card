@@ -273,7 +273,7 @@ xmlns:xlink="http://www.w3.org/1999/xlink">
 
 const HSR = (bg, woff2, detail) =>`<svg width="500" height="165" version="1.1" xmlns="http://www.w3.org/2000/svg"
 xmlns:xlink="http://www.w3.org/1999/xlink">
-<title>Genshin Impact User Card</title>
+<title>Honkai: Star Rail User Card</title>
 <foreignObject width="1000" height="330" transform="scale(.5)">
 
     <body xmlns="http://www.w3.org/1999/xhtml">
@@ -488,7 +488,7 @@ xmlns:xlink="http://www.w3.org/1999/xlink">
 
 const ZZZ = (bg, woff2, detail) =>`<svg width="500" height="165" version="1.1" xmlns="http://www.w3.org/2000/svg"
 xmlns:xlink="http://www.w3.org/1999/xlink">
-<title>Genshin Impact User Card</title>
+<title>Zenless Zone Zero User Card</title>
 <foreignObject width="1000" height="330" transform="scale(.5)">
 
     <body xmlns="http://www.w3.org/1999/xhtml">

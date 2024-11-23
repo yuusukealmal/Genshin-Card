@@ -7,7 +7,6 @@ const { HEADERS, FETCH_ROLE_ID, FETCH_ROLE_INDEX, GAME_ID, COLOR } = require('./
 const { getDS } = require('./utils/index');
 const roleIdCache = new NodeCache({ stdTTL: 60 * 60 * 24 * 365 });
 const userAgents = require('user-agents');
-const { ro } = require('date-fns/locale');
 const randomUserAgent = new userAgents({ deviceCategory: 'desktop' }).toString(); // this will break if hoyolab starts to tie tokens to user agents
 
 const headers = {
