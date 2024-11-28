@@ -6,6 +6,8 @@ const { webhook } = require('./utils/http')
 const svg = require('./utils/svg')
 
 const logger = pino({ level: process.env.LOG_LEVEL || 'info' });
+const CACHE_0 = 'max-age=0, no-cache, no-store, must-revalidate'
+const CACHE_10800 = 'max-age=10800'
 
 const app = express()
 app.use(express.static('public'))
@@ -27,6 +29,7 @@ const card = (req, res, detail = false) => {
     .then(svgImage => {
       res.set({
         'content-type': 'image/svg+xml',
+        'cache-control': isNaN(skin) ? CACHE_0 : CACHE_10800,
       });
       res.send(svgImage);
     })

@@ -1,6 +1,9 @@
 const pino = require('pino');
-const { http, webhook } = require('./utils/http')
+const NodeCache = require("node-cache");
+const { http, webhook } = require('./utils/http');
+
 const logger = pino({ level: process.env.LOG_LEVEL || 'info' });
+const roleIdCache = new NodeCache({ stdTTL: 60 * 60 * 24 * 365 });
 
 const { HEADERS, FETCH_ROLE_ID, FETCH_ROLE_INDEX, GAME_ID, COLOR } = require('./utils/routes')
 const { getDS } = require('./utils/index');
@@ -13,6 +16,8 @@ const headers = {
 }
 
 const getRoleInfo = (game, uid) => {
+  const key = `__uid__${uid}`
+
   return new Promise((resolve, reject) => {
     const qs = { uid }
     http({
@@ -41,7 +46,8 @@ const getRoleInfo = (game, uid) => {
 
             logger.info('首次获取角色信息, uid %s, game_role_id %s, nickname %s, region %s, region_name %s', uid, game_role_id, nickname, region, region_name)
             webhook("First Time Get RoleInfo", `UID = ${uid}\nGAME_ROLE_ID = ${game_role_id}\nNICKNAME = ${nickname}\nREGION = ${region}\nREGION_NAME = ${region_name}`, COLOR.Green)
-
+            
+            roleIdCache.set(key, roleInfo)
             resolve(roleInfo)
           } else {
             logger.warn('無角色數據, uid %s', uid)

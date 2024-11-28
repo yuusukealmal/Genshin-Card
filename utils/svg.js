@@ -2,10 +2,14 @@ const path = require('path')
 const https = require('https')
 const Fontmin = require('fontmin')
 const b2a = require('b3b').b2a
+const NodeCache = require('node-cache')
 const md5 = require('md5')
 const util = require('./index')
 const { SKIN_URL, SKIN_LEN, BASE_GLYPH } = require('./routes')
 const { HI3, GI, HSR, ZZZ } = require('./tpl')
+
+const woff2Cache = new NodeCache({ stdTTL: 60 * 60 * 24 * 365 })
+const logger = pino({ level: process.env.LOG_LEVEL || 'info' })
 
 async function convertToBase64(url) {
   return new Promise((resolve, reject) => {
@@ -48,8 +52,16 @@ function range(start, end) {
 }
 
 const txt2woff2 = (game, text) => {
+  const key = '__woff2__' + md5(text);
 
   return new Promise((resolve, reject) => {
+    const cachedData = woff2Cache.get(key);
+      if (cachedData) {
+        logger.info('Retrieved font subset from cache %s', key);
+        resolve(cachedData);
+      } else {
+
+      }
     const fontmin = new Fontmin()
     .src(path.join(__dirname, `../public/assets/fonts/${game}.ttf`))
     .use(Fontmin.glyph({
