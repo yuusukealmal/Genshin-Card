@@ -1,7 +1,5 @@
 # Hoyocard
 A fork from [Genshin-Card](https://replit.com/@journeyad/Genshin-Card)
-<br>
-Due to it only work on China Servers, I want to make it work on Global Servers and add some features.
 
 <p align="center"><img src="https://hoyocard.vercel.app/gi/75/298543184.png" alt="genshin-impact-card"></p>
 
