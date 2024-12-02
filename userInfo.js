@@ -4,6 +4,7 @@ const { http, webhook } = require('./utils/http');
 
 const logger = pino({ level: process.env.LOG_LEVEL || 'info' });
 const roleIdCache = new NodeCache({ stdTTL: 60 * 60 * 24 * 365 });
+const cardCache = new NodeCache({ stdTTL: 60 * 60 * 24 });
 
 const { HEADERS, FETCH_ROLE_ID, FETCH_ROLE_INDEX, GAME_ID, COLOR } = require('./utils/routes')
 const { getDS } = require('./utils/index');
@@ -19,6 +20,13 @@ const getRoleInfo = (game, uid) => {
   const key = `__uid__${uid}`
 
   return new Promise((resolve, reject) => {
+    let cachedData = roleIdCache.get(key)
+    if (cachedData) {
+      const { game_role_id, nickname, region, region_name } = cachedData
+      logger.info('从缓存中获取角色信息, uid %s, game_role_id %s, nickname %s, region %s, region_name %s', uid, game_role_id, nickname, region, region_name)
+      webhook("User Data From Cache", `UID = ${uid}\nGame Role ID = ${game_role_id}\nNickname = ${nickname}\nRegion = ${region}\nRegion Name = ${region_name}`, COLOR.Yellow)
+      resolve(cachedData)
+    } else {
     const qs = { uid }
     http({
       method: "GET",
@@ -65,11 +73,23 @@ const getRoleInfo = (game, uid) => {
         webhook("GET ROLE_INFO ERROR", resp.message, COLOR.Red)
       })
     }
-  )
+  })
 }
 
 const userInfo = (game, uid, detail=false) => {
-  return new Promise((resolve, reject) => {
+  const key = `__game__${game}__uid__${uid}_${detail ? 'detail' : 'lite'}`
+
+  return new Promise((resolve, reject) => { let cachedBody = cardCache.get(key)
+    if (cachedBody) {
+      if(cachedBody.retcode === 10101){
+        reject(cachedBody.message)
+      } else {
+        logger.info('Retrieved user info from cache %s', key)
+        webhook("User Data From Cache", `UID = ${uid}\nGame Role ID = ${cachedBody.uid}\nNickname = ${cachedBody.nickname}\nRegion = ${cachedBody.region}\nRegion Name = ${cachedBody.region_name}`, COLOR.Yellow)
+        resolve(cachedBody)
+      }
+      return
+    } else {
     getRoleInfo(game, uid)
       .then(roleInfo => {
         const { game_role_id, region } = roleInfo
@@ -86,6 +106,7 @@ const userInfo = (game, uid, detail=false) => {
             ...parsed,
             ...roleInfo
           };
+          cardCache.set(key, data)
           resolve(data);
         } 
         else{
@@ -115,6 +136,7 @@ const userInfo = (game, uid, detail=false) => {
                         ...resp.data.stats,
                         ...roleInfo
                       }
+                      cardCache.set(key, data)
                       resolve(data)
                     } else{
                       const {active_day_number, avatar_number, achievement_number, spiral_abyss, role_combat} = resp.data.stats
@@ -130,6 +152,7 @@ const userInfo = (game, uid, detail=false) => {
                         ...parsed,
                         ...roleInfo
                       }
+                      cardCache.set(key, data)
                       resolve(data)
                     }
                     break;
@@ -143,6 +166,7 @@ const userInfo = (game, uid, detail=false) => {
                         ...resp.data.stats,
                         ...roleInfo
                       }
+                      cardCache.set(key, data)
                       resolve(data)
                     } else{
                       const { active_days, avatar_num, buddy_num, achievement_count} = resp.data.stats
@@ -157,6 +181,7 @@ const userInfo = (game, uid, detail=false) => {
                         ...parsed,
                         ...roleInfo
                       }
+                      cardCache.set(key, data)
                       resolve(data)
                     }
                     break;
@@ -164,6 +189,7 @@ const userInfo = (game, uid, detail=false) => {
               } else {
                 logger.error('取得角色詳情介面報錯 %s', JSON.stringify(resp))
                 webhook("GET USER_INFO ERROR", JSON.stringify(resp), COLOR.Red)
+                cardCache.set(key, resp)
                 reject(resp.message)
               }
             })
@@ -180,7 +206,7 @@ const userInfo = (game, uid, detail=false) => {
         reject(err)
       })
     }
-  )
+  })
 }
 
 module.exports.getRoleInfo = getRoleInfo
