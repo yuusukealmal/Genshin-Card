@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 const card = (req, res, detail = false) => { 
   const { game, skin, uid } = req.params;
   logger.info('收到請求 game:%s uid:%s, skin:%s', game, uid, skin);
-  // webhook("GET Requests", `GAME = ${game}\nUID = ${uid}\nSKIN = ${skin}`)
+  webhook("GET Requests", `GAME = ${game}\nUID = ${uid}\nSKIN = ${skin}`)
 
   userInfo(game, uid, detail)
     .then(data => svg({game, data, skin, detail }))

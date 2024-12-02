@@ -17,14 +17,14 @@ const headers = {
 }
 
 const getRoleInfo = (game, uid) => {
-  const key = `__uid__${uid}`
+  const key = `__uid__${uid}__game__${game}`
 
   return new Promise((resolve, reject) => {
     let cachedData = roleIdCache.get(key)
     if (cachedData) {
       const { game_role_id, nickname, region, region_name } = cachedData
       logger.info('从缓存中获取角色信息, uid %s, game_role_id %s, nickname %s, region %s, region_name %s', uid, game_role_id, nickname, region, region_name)
-      webhook("User Data From Cache", `UID = ${uid}\nGame Role ID = ${game_role_id}\nNickname = ${nickname}\nRegion = ${region}\nRegion Name = ${region_name}`, COLOR.Yellow)
+      webhook("User Data From Cache", `UID = ${uid}\nGame Role ID = ${game_role_id}\nNickname = ${nickname}\nRegion = ${region}\nRegion Name = ${region_name}\nKey = ${key}`, COLOR.Yellow)
       resolve(cachedData)
     } else {
     const qs = { uid }
@@ -85,7 +85,7 @@ const userInfo = (game, uid, detail=false) => {
         reject(cachedBody.message)
       } else {
         logger.info('Retrieved user info from cache %s', key)
-        webhook("User Data From Cache", `UID = ${uid}\nGame Role ID = ${cachedBody.uid}\nNickname = ${cachedBody.nickname}\nRegion = ${cachedBody.region}\nRegion Name = ${cachedBody.region_name}`, COLOR.Yellow)
+        webhook("User Data From Cache", `UID = ${uid}\nGame Role ID = ${cachedBody.uid}\nNickname = ${cachedBody.nickname}\nRegion = ${cachedBody.region}\nRegion Name = ${cachedBody.region_name}\nKey = ${key}`, COLOR.Yellow)
         resolve(cachedBody)
       }
       return
