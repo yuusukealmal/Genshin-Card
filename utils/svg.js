@@ -5,6 +5,7 @@ const b2a = require('b3b').b2a
 const NodeCache = require('node-cache')
 const md5 = require('md5')
 const util = require('./index')
+const pino = require('pino')
 const { SKIN_URL, SKIN_LEN, BASE_GLYPH } = require('./routes')
 const { HI3, GI, HSR, ZZZ } = require('./tpl')
 
