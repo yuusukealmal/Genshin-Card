@@ -24,7 +24,7 @@ const webhook = (title, msg, color) =>
                   "title": title,
                   "description": "```" + msg + "```",
                   "color": color,
-                  "timestamp": format(new Date().setHours(+8), 'yyyy-MM-dd HH:mm:ss')
+                  "timestamp": format(new Date().setHours(+11), 'yyyy-MM-dd HH:mm:ss')
               }
           ]
       },
