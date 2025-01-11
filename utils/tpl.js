@@ -206,6 +206,10 @@ xmlns:xlink="http://www.w3.org/1999/xlink">
                     <div class="val">{{q_manifold}}</div>
                     <div class="desc">量子流形</div>
                 </div>
+                <div class="section temp" style="display: none;">
+                    <div class="val">0</div>
+                    <div class="desc">佔位符</div>
+                </div>
             </div>
         </div>
     </body>
@@ -693,6 +697,10 @@ xmlns:xlink="http://www.w3.org/1999/xlink">
                 <div class="section chest-count">
                     <div class="val">{{chest_count}}</div>
                     <div class="desc">戰利品數量</div>
+                </div>
+                <div class="section temp" style="display: none;">
+                    <div class="val">0</div>
+                    <div class="desc">佔位符</div>
                 </div>
             </div>
         </div>
