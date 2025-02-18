@@ -100,7 +100,7 @@ function base64Img(game, index) {
 
   console.log(path.join(__dirname, `../assets/img/${game}/skin/${index}.${ext}`))
   const image = fs.readFileSync(path.join(__dirname, `../assets/img/${game}/skin/${index}.${ext}`));
-  return `data:${mimeType};base64,${image.toString("base64")}`;
+  return `data:${mineType};base64,${image.toString("base64")}`;
 }
 
 const svg = async ({ game, data, skin = 0, detail = false }) => {
