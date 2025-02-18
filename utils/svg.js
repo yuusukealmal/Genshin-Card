@@ -1,5 +1,5 @@
+const fs = require('fs')
 const path = require('path')
-const https = require('https')
 const Fontmin = require('fontmin')
 const b2a = require('b3b').b2a
 const NodeCache = require('node-cache')
@@ -15,7 +15,6 @@ const logger = pino({ level: process.env.LOG_LEVEL || 'info' })
 function base64Img(game, index) {
   const ext = game == "gs" ? "jpg" : "png";
   const mineType = game == "gs" ? "image/jpeg" : "image/png";
-  console.log(path.join(__dirname, `../assets/img/${game}/skin/${index}.${ext}`))
   const image = fs.readFileSync(path.join(__dirname, `../assets/img/${game}/skin/${index}.${ext}`));
   return `data:${mineType};base64,${image.toString("base64")}`;
 }
