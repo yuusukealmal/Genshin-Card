@@ -7,13 +7,22 @@
                 "includeFiles": [
                     "views/**/*.pug",
                     "node_modules/ttf2woff2/jssrc/ttf2woff2.wasm"
-                ]
+                ],
+                "build": "git submodule update --init --recursive && node index.js"
             }
         }
     ],
     "routes": [
         {
-            "src": "(.*)",
+            "src": "/api/(.*)",
+            "dest": "index.js"
+        },
+        {
+            "src": "/static/(.*)",
+            "dest": "/public/$1"
+        },
+        {
+            "src": "/(.*)",
             "dest": "index.js"
         }
     ]
