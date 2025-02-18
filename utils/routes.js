@@ -34,7 +34,6 @@ const COLOR = {
     "Red": 15548997,
 }
 
-const SKIN_URL = 'https://raw.githubusercontent.com/qhy040404/hoyo-card-assets/refs/heads/main'
 
 const SKIN_LEN = {
     'hi3' : 1,
@@ -56,7 +55,6 @@ module.exports = {
     FETCH_ROLE_INDEX,
     GAME_ID,
     COLOR,
-    SKIN_URL,
     SKIN_LEN,
     BASE_GLYPH
 }

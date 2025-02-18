@@ -1,6 +1,5 @@
 const fs = require('fs')
 const path = require('path')
-const https = require('https')
 const mimeType = require('mime-types')
 const Fontmin = require('fontmin')
 const b2a = require('b3b').b2a
@@ -8,7 +7,7 @@ const NodeCache = require('node-cache')
 const md5 = require('md5')
 const pino = require('pino')
 const util = require('./index')
-const { SKIN_URL, SKIN_LEN, BASE_GLYPH } = require('./routes')
+const { SKIN_LEN, BASE_GLYPH } = require('./routes')
 const { HI3, GI, HSR, ZZZ } = require('./tpl')
 
 const woff2Cache = new NodeCache({ stdTTL: 60 * 60 * 24 * 365 })
@@ -95,6 +94,15 @@ const txt2woff2 = (game, text) => {
   });
 };
 
+function base64Img(game, index) {
+  const ext = game == "gs" ? "jpg" : "png";
+  const mineType = game == "gs" ? "image/jpeg" : "image/png";
+
+  console.log(path.join(__dirname, `../assets/img/${game}/skin/${index}.${ext}`))
+  const image = fs.readFileSync(path.join(__dirname, `../assets/img/${game}/skin/${index}.${ext}`));
+  return `data:${mimeType};base64,${image.toString("base64")}`;
+}
+
 const svg = async ({ game, data, skin = 0, detail = false }) => {
   // '2,5,9' -> [2, 5, 9]
   // '3-5' -> [3, 4, 5]
@@ -139,7 +147,7 @@ const svg = async ({ game, data, skin = 0, detail = false }) => {
       'sr': HSR,
       'zzz': ZZZ
   };
-    const tpl = functions[game](`${SKIN_URL}/${game}/skin/${skin}.jpg`, woff2, detail)
+    const tpl = functions[game](base64Img(game, skin), woff2, detail)
 
     resolve(util.render(tpl, data))
   })

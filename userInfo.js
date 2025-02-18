@@ -62,7 +62,7 @@ const getRoleInfo = (game, uid) => {
       })
       .catch(err => {
         logger.error('取得角色ID介面請求報錯 %o', err)
-        webhook("GET ROLE_INFO ERROR", resp.message, COLOR.Red)
+        webhook("GET ROLE_INFO ERROR", err.message, COLOR.Red)
       })
     }
   )
