@@ -5,13 +5,13 @@ const HEADERS = {
     'x-rpc-client_type': 5
 }
 
-const FETCH_ROLE_ID = 'https://bbs-api-os.hoyolab.com/game_record/card/wapi/getGameRecordCard'
+const FETCH_ROLE_ID = 'https://sg-public-api.hoyolab.com/event/game_record/card/wapi/getGameRecordCard'
 
 const FETCH_ROLE_INDEX = {
     'hi3' : 'https://bbs-api-os.hoyolab.com/game_record/honkai3rd/api/index', 
-    'gi' : 'https://bbs-api-os.hoyolab.com/game_record/genshin/api/index',
-    'hsr' : 'https://bbs-api-os.hoyolab.com/game_record/hkrpg/api/index',
-    'zzz' : 'https://sg-act-nap-api.hoyolab.com/event/game_record_zzz/api/zzz/index'
+    'gi' : 'https://sg-public-api.hoyolab.com/event/game_record/genshin/api/index',
+    'hsr' : 'https://sg-public-api.hoyolab.com/event/game_record/hkrpg/api/index',
+    'zzz' : 'https://sg-public-api.hoyolab.com/event/game_record_zzz/api/zzz/index'
 }
 
 const GAME_ID = {

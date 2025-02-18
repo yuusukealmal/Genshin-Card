@@ -26,7 +26,7 @@ const getRoleInfo = (game, uid) => {
       headers: {
         ...headers,
         "Cookie": `${process.env.HOYOLAB_TOKENV2 == "true" ? "ltoken_v2" : "ltoken"}=${process.env.HOYOLAB_TOKEN};${process.env.HOYOLAB_TOKENV2 == "true" ? "ltuid_v2" : "ltuid"}=${process.env.HOYOLAB_ID};`, // HoYoLAB only cares about the LToken and LTUID cookies
-        'DS': getDS(qs),
+        'DS': getDS(),
       }
     })
       .then(resp => {
@@ -96,7 +96,7 @@ const userInfo = (game, uid, detail=false) => {
             headers: {
               ...headers,
               "Cookie": `${process.env.HOYOLAB_TOKENV2 == "true" ? "ltoken_v2" : "ltoken"}=${process.env.HOYOLAB_TOKEN};${process.env.HOYOLAB_TOKENV2 == "true" ? "ltuid_v2" : "ltuid"}=${process.env.HOYOLAB_ID};`, // HoYoLAB only cares about the LToken and LTUID cookies
-              'DS': getDS(qs),
+              'DS': getDS(),
             }
           })
             .then(resp => {
