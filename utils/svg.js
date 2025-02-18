@@ -1,6 +1,5 @@
 const fs = require('fs')
 const path = require('path')
-const mimeType = require('mime-types')
 const Fontmin = require('fontmin')
 const b2a = require('b3b').b2a
 const NodeCache = require('node-cache')
@@ -12,33 +11,6 @@ const { HI3, GI, HSR, ZZZ } = require('./tpl')
 
 const woff2Cache = new NodeCache({ stdTTL: 60 * 60 * 24 * 365 })
 const logger = pino({ level: process.env.LOG_LEVEL || 'info' })
-
-// async function convertToBase64(url) {
-//   return new Promise((resolve, reject) => {
-//     https.get(url, (res) => {
-//       const chunks = [];
-//       res.on('data', (chunk) => {
-//         chunks.push(chunk);
-//       });
-//       res.on('end', () => {
-//         const buffer = Buffer.concat(chunks);
-//         const base64 = buffer.toString('base64');
-//         const mimeType = res.headers['content-type'];
-//         if (mimeType.includes('image/jpeg')) {
-//           resolve(`data:image/jpeg;base64,${base64}`);
-//         } else if (mimeType.includes('image/png')) {
-//             resolve(`data:image/png;base64,${base64}`);
-//         } else {
-//           convertToBase64(url.replace('jpg', 'png'))
-//           .then(result => resolve(result))
-//           .catch(err => reject(err));
-//         }
-//       });
-//     }).on('error', (err) => {
-//       reject(err);
-//     });
-//   });
-// }
 
 function random(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min)
@@ -98,7 +70,6 @@ function base64Img(game, index) {
   const ext = game == "gs" ? "jpg" : "png";
   const mineType = game == "gs" ? "image/jpeg" : "image/png";
 
-  console.log(path.join(__dirname, `../assets/img/${game}/skin/${index}.${ext}`))
   const image = fs.readFileSync(path.join(__dirname, `../assets/img/${game}/skin/${index}.${ext}`));
   return `data:${mineType};base64,${image.toString("base64")}`;
 }
