@@ -1,0 +1,3 @@
+[submodule "public/assets/img"]
+	path = public/assets/img
+	url = https://github.com/qhy040404/hoyo-card-assets.git

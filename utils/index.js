@@ -1,4 +1,4 @@
-const md5 = require('md5')
+const crypto = require('crypto')
 
 const randomStr = (length) => {
   var result = '';
@@ -26,17 +26,22 @@ const getQueryParam = (data) => {
   return arr.join("&");
 }
 
-const getDS = (query, body = "") => {
-  // v2.11.1 - from app
-  const n = "xV8v4Qu54lUKrEYFZkJhB8cuOh9Asafs";
-  const i = Date.now() / 1000 | 0;
-  const r = randomInt(100001, 200000);
-  const q = getQueryParam(query);
-  const c = md5(`salt=${n}&t=${i}&r=${r}&b=${body}&q=${q}`);
+const getDS = () => {
+  const salt = '6s25p5ox5y14umn1p61aqyyvbvvl3lrt';
+  const time = Math.floor(Date.now() / 1000);
 
-  return `${i},${r},${c}`;
+  const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  let random = '';
+  for (let i = 0; i < 6; i++) {
+    random += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+
+  const hash = crypto.createHash('md5')
+    .update(`salt=${salt}&t=${time}&r=${random}`)
+    .digest('hex');
+
+  return `${time},${random},${hash}`;
 }
-
 const render = (template, context) => {
 
   var tokenReg = /(\\)?\{\{([^\{\}\\]+)(\\)?\}\}/g;

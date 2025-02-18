@@ -6,37 +6,18 @@ const NodeCache = require('node-cache')
 const md5 = require('md5')
 const util = require('./index')
 const pino = require('pino')
-const { SKIN_URL, SKIN_LEN, BASE_GLYPH } = require('./routes')
+const { SKIN_LEN, BASE_GLYPH } = require('./routes')
 const { HI3, GI, HSR, ZZZ } = require('./tpl')
 
 const woff2Cache = new NodeCache({ stdTTL: 60 * 60 * 24 * 365 })
 const logger = pino({ level: process.env.LOG_LEVEL || 'info' })
 
-async function convertToBase64(url) {
-  return new Promise((resolve, reject) => {
-    https.get(url, (res) => {
-      const chunks = [];
-      res.on('data', (chunk) => {
-        chunks.push(chunk);
-      });
-      res.on('end', () => {
-        const buffer = Buffer.concat(chunks);
-        const base64 = buffer.toString('base64');
-        const mimeType = res.headers['content-type'];
-        if (mimeType.includes('image/jpeg')) {
-          resolve(`data:image/jpeg;base64,${base64}`);
-        } else if (mimeType.includes('image/png')) {
-            resolve(`data:image/png;base64,${base64}`);
-        } else {
-          convertToBase64(url.replace('jpg', 'png'))
-          .then(result => resolve(result))
-          .catch(err => reject(err));
-        }
-      });
-    }).on('error', (err) => {
-      reject(err);
-    });
-  });
+function base64Img(game, index) {
+  const ext = game == "gs" ? "jpg" : "png";
+  const mineType = game == "gs" ? "image/jpeg" : "image/png";
+  console.log(path.join(__dirname, `../assets/img/${game}/skin/${index}.${ext}`))
+  const image = fs.readFileSync(path.join(__dirname, `../assets/img/${game}/skin/${index}.${ext}`));
+  return `data:${mineType};base64,${image.toString("base64")}`;
 }
 
 function random(min, max) {
@@ -126,7 +107,6 @@ const svg = async ({ game, data, skin = 0, detail = false }) => {
   if (game == 'hsr') game = 'sr';
 
   const woff2 = await txt2woff2(game, data.nickname)
-  const bg = await convertToBase64(`${SKIN_URL}/${game}/skin/${skin}.jpg`)
 
   return new Promise((resolve, reject) => {
     const functions = {
@@ -135,7 +115,7 @@ const svg = async ({ game, data, skin = 0, detail = false }) => {
       'sr': HSR,
       'zzz': ZZZ
   };
-    const tpl = functions[game](bg, woff2, detail)
+    const tpl = functions[game](base64Img(game, skin), woff2, detail)
 
     resolve(util.render(tpl, data))
   })
