@@ -24,7 +24,6 @@
     "pino": "^9.6.0",
     "pug": "^3.0.0",
     "request": "^2.88.2",
-    "serverless-http": "^3.2.0",
     "subset-font": "^2.4.0",
     "ttf2woff": "^3.0.0",
     "upgrade": "^1.1.0",

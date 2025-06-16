@@ -138,6 +138,7 @@ const userInfo = (game, uid, detail = false) => {
     } else {
       getRoleInfo(game, uid)
         .then((roleInfo) => {
+          // console.log(roleInfo);
           const { game_role_id, region } = roleInfo;
           const qs = { role_id: game_role_id, server: region };
           if (game === "hsr" || game === "hi3") {
@@ -180,6 +181,7 @@ const userInfo = (game, uid, detail = false) => {
               },
             })
               .then((resp) => {
+                // console.log(resp);
                 resp = JSON.parse(resp);
                 if (resp.retcode === 0) {
                   switch (game) {

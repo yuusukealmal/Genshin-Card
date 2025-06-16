@@ -35,7 +35,7 @@ function range(start, end) {
   return Array.from(new Array(parseInt(end)).keys()).slice(parseInt(start));
 }
 
-const txt2woff = (game, text) => {
+const txt2woff = (game, text) => async () => {
   const key = `__woff__${game}__${md5(text)}`;
   const cached = woffCache.get(key);
   if (cached) {
@@ -44,21 +44,32 @@ const txt2woff = (game, text) => {
   }
 
   const fontPath = path.join(__dirname, `../public/assets/fonts/${game}.ttf`);
-  const ttfBuffer = fs.readFileSync(fontPath);
+  if (!fs.existsSync(fontPath)) {
+    throw new Error(`Font file does not exist: ${fontPath}`);
+  }
 
+  const ttfBuffer = fs.readFileSync(fontPath);
   const subsetText = BASE_GLYPH[game] + text;
 
-  // Subset the TTF font
-  const subsetBuffer = subsetFont(ttfBuffer, subsetText, {
-    targetFormat: "ttf", // we want to keep TTF so we can convert to WOFF
+  const subsetBuffer = await subsetFont(ttfBuffer, subsetText, {
+    targetFormat: "ttf",
     hinting: false,
   });
 
-  // Convert to WOFF
-  const woffBuffer = Buffer.from(ttf2woff(subsetBuffer).buffer);
+  if (!subsetBuffer) {
+    throw new Error(`Failed to subset font for ${game} with text: "${text}"`);
+  }
+
+  const woffData = ttf2woff(subsetBuffer);
+  if (!woffData || !woffData.buffer) {
+    throw new Error(`ttf2woff failed for game: ${game}`);
+  }
+
+  const woffBuffer = Buffer.from(woffData.buffer);
   const base64Woff = b2a(woffBuffer);
 
   woffCache.set(key, base64Woff);
+  logger.info("Set font to cache: %s", key);
   return base64Woff;
 };
 
@@ -94,6 +105,7 @@ const svg = async ({ game, data, skin = 0, detail = false }) => {
   if (game == "hsr") game = "sr";
 
   const woff = txt2woff(game, data.nickname);
+
 
   return new Promise((resolve, reject) => {
     const functions = {
