@@ -1,5 +1,4 @@
-const fs = require("fs");
-const path = require("path");
+const axios = require("axios");
 const subsetFont = require("subset-font");
 const ttf2woff = require("ttf2woff");
 const b2a = require("b3b").b2a;
@@ -13,13 +12,12 @@ const { HI3, GI, HSR, ZZZ } = require("./tpl");
 const woffCache = new NodeCache({ stdTTL: 60 * 60 * 24 * 365 });
 const logger = pino({ level: process.env.LOG_LEVEL || "info" });
 
-function base64Img(game, index) {
-  const ext = game == "gs" ? "jpg" : "png";
-  const mineType = game == "gs" ? "image/jpeg" : "image/png";
-  const image = fs.readFileSync(
-    path.join(__dirname, `../public/assets/img/${game}/skin/${index}.${ext}`)
-  );
-  return `data:${mineType};base64,${image.toString("base64")}`;
+async function base64Img(game, index) {
+  const ext = game === "gs" ? "jpg" : "png";
+  const mime = game === "gs" ? "image/jpeg" : "image/png";
+  const url = `https://hoyocard.vercel.app/assets/img/${game}/skin/${index}.${ext}`;
+  const res = await axios.get(url, { responseType: "arraybuffer" });
+  return `data:${mime};base64,${Buffer.from(res.data).toString("base64")}`;
 }
 
 function random(min, max) {
@@ -43,12 +41,10 @@ const txt2woff = (game, text) => async () => {
     return cached;
   }
 
-  const fontPath = path.join(__dirname, `../public/assets/fonts/${game}.ttf`);
-  if (!fs.existsSync(fontPath)) {
-    throw new Error(`Font file does not exist: ${fontPath}`);
-  }
-
-  const ttfBuffer = fs.readFileSync(fontPath);
+  const fontUrl = `https://hoyocard.vercel.app/assets/fonts/${game}.ttf`;
+  const ttfBuffer = await axios
+    .get(fontUrl, { responseType: "arraybuffer" })
+    .then((res) => Buffer.from(res.data));
   const subsetText = BASE_GLYPH[game] + text;
 
   const subsetBuffer = await subsetFont(ttfBuffer, subsetText, {
@@ -105,7 +101,6 @@ const svg = async ({ game, data, skin = 0, detail = false }) => {
   if (game == "hsr") game = "sr";
 
   const woff = txt2woff(game, data.nickname);
-
 
   return new Promise((resolve, reject) => {
     const functions = {

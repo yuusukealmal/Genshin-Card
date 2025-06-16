@@ -13,6 +13,7 @@
   "author": "journey-ad",
   "license": "MIT",
   "dependencies": {
+    "axios": "^1.10.0",
     "b3b": "0.0.1",
     "compression": "^1.8.0",
     "date-fns": "^4.1.0",
