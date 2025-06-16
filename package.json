@@ -26,7 +26,6 @@
     "pug": "^3.0.0",
     "request": "^2.88.2",
     "subset-font": "^2.4.0",
-    "ttf2woff": "^3.0.0",
     "upgrade": "^1.1.0",
     "user-agents": "^1.1.454"
   },

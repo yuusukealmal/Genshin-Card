@@ -1,6 +1,5 @@
 const axios = require("axios");
 const subsetFont = require("subset-font");
-const ttf2woff = require("ttf2woff");
 const b2a = require("b3b").b2a;
 const NodeCache = require("node-cache");
 const md5 = require("md5");
@@ -48,18 +47,14 @@ const txt2woff = async (game, text) => {
   const subsetText = BASE_GLYPH[game] + text;
 
   const subsetBuffer = await subsetFont(ttfBuffer, subsetText, {
-    targetFormat: "ttf",
+    targetFormat: "woff",
     hinting: false,
   });
 
   if (!subsetBuffer)
     throw new Error(`Failed to subset font for ${game} with text: "${text}"`);
 
-  const woffData = ttf2woff(subsetBuffer);
-  if (!woffData?.buffer) throw new Error(`ttf2woff failed for game: ${game}`);
-
-  const woffBuffer = Buffer.from(woffData.buffer);
-  const base64Woff = b2a(woffBuffer);
+  const base64Woff = b2a(subsetBuffer); // ✅ 不用 ttf2woff 了
 
   woffCache.set(key, base64Woff);
   logger.info("Set font to cache: %s", key);
