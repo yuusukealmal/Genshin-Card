@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "serve": "node index.js",
-    "dev": "LOG_LEVEL=debug node index.js | ./node_modules/.bin/pino-pretty",
+    "build": "node index.js",
+    "dev": "cross-env LOG_LEVEL=debug node index.js | pino-pretty",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

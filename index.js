@@ -57,7 +57,9 @@ app.get('/heart-beat', (req, res) => {
   logger.info('heart-beat')
 });
 
-const listener = app.listen(3000, () => {
-  require("dotenv").config();
-  logger.info('Your app is listening on port ' + listener.address().port)
-})
+const port = process.env.PORT || 3000;
+app.listen(port, function () {
+  const addr = this.address();
+  const actualPort = addr && typeof addr === 'object' ? addr.port : port;
+  logger.info('Your app is listening on port ' + actualPort);
+});
