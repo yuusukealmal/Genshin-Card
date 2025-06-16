@@ -12,7 +12,7 @@ const CACHE_0 = "max-age=0, no-cache, no-store, must-revalidate";
 const CACHE_10800 = "max-age=10800";
 
 const app = express();
-app.use(express.static("public"));
+// app.use(express.static("public"));
 app.use(compression());
 app.set("view engine", "pug");
 
