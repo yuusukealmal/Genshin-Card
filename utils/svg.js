@@ -100,7 +100,7 @@ const svg = async ({ game, data, skin = 0, detail = false }) => {
   if (game == "gi") game = "gs";
   if (game == "hsr") game = "sr";
 
-  const woff = txt2woff(game, data.nickname);
+  const woff = await txt2woff(game, data.nickname);
 
   return new Promise(async (resolve, reject) => {
     const functions = {
