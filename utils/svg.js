@@ -33,7 +33,7 @@ function range(start, end) {
   return Array.from(new Array(parseInt(end)).keys()).slice(parseInt(start));
 }
 
-const txt2woff = (game, text) => async () => {
+const txt2woff = async (game, text) => {
   const key = `__woff__${game}__${md5(text)}`;
   const cached = woffCache.get(key);
   if (cached) {
@@ -52,14 +52,11 @@ const txt2woff = (game, text) => async () => {
     hinting: false,
   });
 
-  if (!subsetBuffer) {
+  if (!subsetBuffer)
     throw new Error(`Failed to subset font for ${game} with text: "${text}"`);
-  }
 
   const woffData = ttf2woff(subsetBuffer);
-  if (!woffData || !woffData.buffer) {
-    throw new Error(`ttf2woff failed for game: ${game}`);
-  }
+  if (!woffData?.buffer) throw new Error(`ttf2woff failed for game: ${game}`);
 
   const woffBuffer = Buffer.from(woffData.buffer);
   const base64Woff = b2a(woffBuffer);
