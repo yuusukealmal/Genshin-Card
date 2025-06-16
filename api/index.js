@@ -1,6 +1,7 @@
 const express = require('express');
 const compression = require('compression');
 const pino = require('pino');
+const path = require('path');
 const serverless = require('serverless-http');
 
 const { userInfo } = require('./userInfo');
@@ -16,6 +17,7 @@ app.use(express.static('public'));
 app.use(compression());
 app.set('view engine', 'pug');
 
+app.set("views", path.join(__dirname, "../views"));
 app.get('/', (req, res) => {
   res.render('index');
 });
