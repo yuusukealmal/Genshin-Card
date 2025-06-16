@@ -20,12 +20,12 @@ app.get('/', (req, res) => {
   res.render('index');
 });
 
-const card = (req, res, detail = false) => {
+const card = (req, res, detail = false) => async () => {
   const { game, skin, uid } = req.params;
   logger.info('收到請求 game:%s uid:%s, skin:%s', game, uid, skin);
-  webhook("GET Requests", `GAME = ${game}\nUID = ${uid}\nSKIN = ${skin}`);
+  await webhook("GET Requests", `GAME = ${game}\nUID = ${uid}\nSKIN = ${skin}`);
 
-  userInfo(game, uid, detail)
+  await userInfo(game, uid, detail)
     .then(data => svg({ game, data, skin, detail }))
     .then(svgImage => {
       res.set({
