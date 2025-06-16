@@ -102,14 +102,14 @@ const svg = async ({ game, data, skin = 0, detail = false }) => {
 
   const woff = txt2woff(game, data.nickname);
 
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     const functions = {
       hi3: HI3,
       gs: GI,
       sr: HSR,
       zzz: ZZZ,
     };
-    const tpl = functions[game](base64Img(game, skin), woff, detail);
+    const tpl = functions[game](await base64Img(game, skin), woff, detail);
 
     resolve(util.render(tpl, data));
   });
