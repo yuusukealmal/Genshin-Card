@@ -9,7 +9,7 @@ const pino = require("pino");
 const { SKIN_LEN, BASE_GLYPH } = require("./routes");
 const { HI3, GI, HSR, ZZZ } = require("./tpl");
 
-const woff2Cache = new NodeCache({ stdTTL: 60 * 60 * 24 * 365 });
+const woffCache = new NodeCache({ stdTTL: 60 * 60 * 24 * 365 });
 const logger = pino({ level: process.env.LOG_LEVEL || "info" });
 
 function base64Img(game, index) {
@@ -107,7 +107,7 @@ const svg = async ({ game, data, skin = 0, detail = false }) => {
   if (game == "gi") game = "gs";
   if (game == "hsr") game = "sr";
 
-  const woff2 = await txt2woff2(game, data.nickname);
+  const woff = await txt2woff(game, data.nickname);
 
   return new Promise((resolve, reject) => {
     const functions = {
@@ -116,7 +116,7 @@ const svg = async ({ game, data, skin = 0, detail = false }) => {
       sr: HSR,
       zzz: ZZZ,
     };
-    const tpl = functions[game](base64Img(game, skin), woff2, detail);
+    const tpl = functions[game](base64Img(game, skin), woff, detail);
 
     resolve(util.render(tpl, data));
   });
