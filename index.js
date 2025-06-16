@@ -5,8 +5,8 @@ const path = require("path");
 const serverless = require("serverless-http");
 
 const { userInfo } = require("./userInfo");
-const { webhook } = require("../utils/http");
-const svg = require("../utils/svg");
+const { webhook } = require("./utils/http");
+const svg = require("./utils/svg");
 
 const logger = pino({ level: process.env.LOG_LEVEL || "info" });
 const CACHE_0 = "max-age=0, no-cache, no-store, must-revalidate";
@@ -17,7 +17,7 @@ app.use(express.static("public"));
 app.use(compression());
 app.set("view engine", "pug");
 
-app.set("views", path.join(__dirname, "../views"));
+app.set("views", path.join(__dirname, "./views"));
 app.get("/", (req, res) => {
   res.render("index");
 });

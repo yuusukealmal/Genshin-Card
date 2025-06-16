@@ -1,6 +1,6 @@
 const pino = require("pino");
 const NodeCache = require("node-cache");
-const { http, webhook } = require("../utils/http");
+const { http, webhook } = require("./utils/http");
 
 const logger = pino({ level: process.env.LOG_LEVEL || "info" });
 const roleIdCache = new NodeCache({ stdTTL: 60 * 60 * 24 * 365 });
@@ -12,8 +12,8 @@ const {
   FETCH_ROLE_INDEX,
   GAME_ID,
   COLOR,
-} = require("../utils/routes");
-const { getDS } = require("../utils/index");
+} = require("./utils/routes");
+const { getDS } = require("./utils/index");
 const userAgents = require("user-agents");
 const randomUserAgent = new userAgents({
   deviceCategory: "desktop",
