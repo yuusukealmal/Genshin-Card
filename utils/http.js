@@ -12,8 +12,8 @@ function http(options) {
   }).catch((error) => console.error(error));
 }
 
-const webhook = (title, msg, color) => async () => {
-  await http({
+const webhook = (title, msg, color) => {
+  http({
     method: "POST",
     url: process.env.WEBHOOK,
     json: {

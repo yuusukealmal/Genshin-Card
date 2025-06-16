@@ -24,10 +24,10 @@ const headers = {
   "User-Agent": randomUserAgent,
 };
 
-const getRoleInfo = (game, uid) => async () => {
+const getRoleInfo = (game, uid) => {
   const key = `__uid__${uid}__game__${game}`;
 
-  return new Promise((resolve, reject) => async () => {
+  return new Promise((resolve, reject) => {
     let cachedData = roleIdCache.get(key);
     if (cachedData) {
       const { game_role_id, nickname, region, region_name } = cachedData;
@@ -47,7 +47,7 @@ const getRoleInfo = (game, uid) => async () => {
       resolve(cachedData);
     } else {
       const qs = { uid };
-      await http({
+      http({
         method: "GET",
         url: FETCH_ROLE_ID,
         qs,
@@ -61,7 +61,7 @@ const getRoleInfo = (game, uid) => async () => {
           DS: getDS(),
         },
       })
-        .then((resp) => async () => {
+        .then((resp) => {
           resp = JSON.parse(resp);
           if (resp.retcode === 0) {
             if (resp.data.list && resp.data.list.length > 0) {
@@ -71,11 +71,7 @@ const getRoleInfo = (game, uid) => async () => {
 
               if (!roleInfo) {
                 logger.warn("無角色數據, uid %s", uid);
-                await webhook(
-                  "User Data Not Found",
-                  `UID = ${uid}`,
-                  COLOR.Yellow
-                );
+                webhook("User Data Not Found", `UID = ${uid}`, COLOR.Yellow);
                 reject(
                   "無角色數據，請檢查輸入的米哈遊通行證ID是否有誤（非遊戲內的UID）和是否設置了公開角色信息，若操作無誤則可能是被米哈遊屏蔽，請第二天再試"
                 );
@@ -91,7 +87,7 @@ const getRoleInfo = (game, uid) => async () => {
                 region,
                 region_name
               );
-              await webhook(
+              webhook(
                 "First Time Get RoleInfo",
                 `UID = ${uid}\nGAME_ROLE_ID = ${game_role_id}\nNICKNAME = ${nickname}\nREGION = ${region}\nREGION_NAME = ${region_name}`,
                 COLOR.Green
@@ -101,24 +97,20 @@ const getRoleInfo = (game, uid) => async () => {
               resolve(roleInfo);
             } else {
               logger.warn("無角色數據, uid %s", uid);
-              await webhook(
-                "User Data Not Found",
-                `UID = ${uid}`,
-                COLOR.Yellow
-              );
+              webhook("User Data Not Found", `UID = ${uid}`, COLOR.Yellow);
               reject(
                 "無角色數據，請檢查輸入的米哈遊通行證ID是否有誤（非遊戲內的UID）和是否設置了公開角色信息，若操作無誤則可能是被米哈遊屏蔽，請第二天再試"
               );
             }
           } else {
             logger.error("取得角色ID介面報錯 %s", resp.message);
-            await webhook("GET ROLE_INFO ERROR", resp.message, COLOR.Red);
+            webhook("GET ROLE_INFO ERROR", resp.message, COLOR.Red);
             reject(resp.message);
           }
         })
-        .catch((err) => async () => {
+        .catch((err) => {
           logger.error("取得角色ID介面請求報錯 %o", err);
-          await webhook("GET ROLE_INFO ERROR", err.message, COLOR.Red);
+          webhook("GET ROLE_INFO ERROR", err.message, COLOR.Red);
           reject(err);
         });
     }
@@ -128,14 +120,14 @@ const getRoleInfo = (game, uid) => async () => {
 const userInfo = (game, uid, detail = false) => {
   const key = `__game__${game}__uid__${uid}_${detail ? "detail" : "lite"}`;
 
-  return new Promise((resolve, reject) => async () => {
+  return new Promise((resolve, reject) => {
     let cachedBody = cardCache.get(key);
     if (cachedBody) {
       if (cachedBody.retcode === 10101) {
         reject(cachedBody.message);
       } else {
         logger.info("Retrieved user info from cache %s", key);
-        await webhook(
+        webhook(
           "User Data From Cache",
           `UID = ${uid}\nGame Role ID = ${cachedBody.uid}\nNickname = ${cachedBody.nickname}\nRegion = ${cachedBody.region}\nRegion Name = ${cachedBody.region_name}\nKey = ${key}`,
           COLOR.Yellow
@@ -144,8 +136,8 @@ const userInfo = (game, uid, detail = false) => {
       }
       return;
     } else {
-      await getRoleInfo(game, uid)
-        .then((roleInfo) => async () => {
+      getRoleInfo(game, uid)
+        .then((roleInfo) => {
           const { game_role_id, region } = roleInfo;
           const qs = { role_id: game_role_id, server: region };
           if (game === "hsr" || game === "hi3") {
@@ -173,7 +165,7 @@ const userInfo = (game, uid, detail = false) => {
             cardCache.set(key, data);
             resolve(data);
           } else {
-            await http({
+            http({
               method: "GET",
               url: FETCH_ROLE_INDEX[game],
               qs,
@@ -187,7 +179,7 @@ const userInfo = (game, uid, detail = false) => {
                 DS: getDS(),
               },
             })
-              .then((resp) => async () => {
+              .then((resp) => {
                 resp = JSON.parse(resp);
                 if (resp.retcode === 0) {
                   switch (game) {
@@ -279,7 +271,7 @@ const userInfo = (game, uid, detail = false) => {
                   }
                 } else {
                   logger.error("取得角色詳情介面報錯 %s", JSON.stringify(resp));
-                  await webhook(
+                  webhook(
                     "GET USER_INFO ERROR",
                     JSON.stringify(resp),
                     COLOR.Red
@@ -288,20 +280,16 @@ const userInfo = (game, uid, detail = false) => {
                   reject(resp.message);
                 }
               })
-              .catch((err) => async () => {
+              .catch((err) => {
                 logger.warn(err);
-                await webhook(
-                  "RANDOM ERROR",
-                  JSON.stringify(err),
-                  COLOR.Yellow
-                );
+                webhook("RANDOM ERROR", JSON.stringify(err), COLOR.Yellow);
                 reject(err);
               });
           }
         })
-        .catch((err) => async () => {
+        .catch((err) => {
           logger.warn(err);
-          await webhook("RANDOM ERROR", JSON.stringify(err), COLOR.Yellow);
+          webhook("RANDOM ERROR", JSON.stringify(err), COLOR.Yellow);
           reject(err);
         });
     }

@@ -35,7 +35,7 @@ function range(start, end) {
   return Array.from(new Array(parseInt(end)).keys()).slice(parseInt(start));
 }
 
-const txt2woff = async (game, text) => {
+const txt2woff = (game, text) => {
   const key = `__woff__${game}__${md5(text)}`;
   const cached = woffCache.get(key);
   if (cached) {
@@ -49,7 +49,7 @@ const txt2woff = async (game, text) => {
   const subsetText = BASE_GLYPH[game] + text;
 
   // Subset the TTF font
-  const subsetBuffer = await subsetFont(ttfBuffer, subsetText, {
+  const subsetBuffer = subsetFont(ttfBuffer, subsetText, {
     targetFormat: "ttf", // we want to keep TTF so we can convert to WOFF
     hinting: false,
   });
@@ -93,7 +93,7 @@ const svg = async ({ game, data, skin = 0, detail = false }) => {
   if (game == "gi") game = "gs";
   if (game == "hsr") game = "sr";
 
-  const woff = await txt2woff(game, data.nickname);
+  const woff = txt2woff(game, data.nickname);
 
   return new Promise((resolve, reject) => {
     const functions = {
