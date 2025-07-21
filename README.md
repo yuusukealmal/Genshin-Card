@@ -13,34 +13,6 @@ Get All Theme on [hoyo-card-assets](https://github.com/qhy040404/hoyo-card-asset
 ## Demo
 [https://hoyocard.vercel.app](https://hoyocard.vercel.app)
 
-## Usage
-
-### Install
-
-#### Run on Repl.it
-
-- Open the url [https://repl.it/@journeyad/Genshin-Card](https://repl.it/@journeyad/Genshin-Card)
-- Just hit the **Fork** button
-- Edit `.env` file to specify the environment variable `COOKIE`, [documentation](https://docs.repl.it/repls/secret-keys)
-- And hit the **Run** button
-
-#### Deploying on your own server
-
-```shell
-$ git clone https://github.com/journey-ad/genshin-impact-card.git
-$ cd genshin-impact-card
-$ yarn install
-
-$ export COOKIE="Your mihoyo BBS Cookie Here"
-$ yarn serve
-```
-
-#### 自建图文指南
-
-*   By [BlueSkyXN](https://github.com/BlueSkyXN/Genshin-card)
-*   [Genshin-card 原神玩家信息小卡片生成器自建指南](https://www.blueskyxn.com/202102/4008.html)
-
-
 ## Credits
 
 *   [repl.it](https://repl.it/)
